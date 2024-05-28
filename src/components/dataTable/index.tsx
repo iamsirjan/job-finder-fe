@@ -94,7 +94,7 @@ type Props<T extends Record<string, unknown>> = {
 
 export const Table = <T extends Record<string, unknown>>(props: Props<T>) => {
   const HoverComponent = props.hoverComponent;
-  const showNumberBasedPagination = props?.showNumberBasedPagination ?? false;
+  // const showNumberBasedPagination = props?.showNumberBasedPagination ?? false;
 
   const [globalFilter, setGlobalFilter] = useState('');
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);

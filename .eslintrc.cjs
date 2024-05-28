@@ -1,18 +1,48 @@
 module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
   extends: [
     'eslint:recommended',
+    'plugin:react/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
-  rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2020,
+    sourceType: 'module',
   },
-}
+  plugins: ['react', 'prettier', 'jsx-a11y', 'import', '@typescript-eslint'],
+  rules: {
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
+    'import/first': 'error',
+    'react/prop-types': 0,
+    'prettier/prettier': [
+      'off',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+    'arrow-body-style': 'off',
+    'prefer-arrow-callback': 'off',
+    'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/ban-ts-comment': 2,
+    '@typescript-eslint/no-explicit-any': 'off',
+    'react/display-name': 'off',
+  },
+};

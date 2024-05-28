@@ -12,6 +12,8 @@ const navItems = [
   {
     name: 'Master Data',
     icon: DashboardIcon,
+    to: NAVIGATION_ROUTES.MASTERDATA.DEGREE,
+
     visible: true,
     child: [
       {

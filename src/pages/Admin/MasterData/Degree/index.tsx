@@ -18,7 +18,7 @@ const Degree = () => {
   ];
 
   const onDelete = ({ id, name }: { id: string; name: string }) => {
-    //
+    console.log(id, name);
   };
 
   return (

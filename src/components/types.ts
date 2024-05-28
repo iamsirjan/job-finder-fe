@@ -6,6 +6,7 @@ export type VARIANT =
   | 'secondary-danger'
   | 'ghost-danger'
   | 'create'
+  | 'outline-danger'
   | 'secondary-danger-create';
 export type STEP_STATUS = 'current' | 'completed' | 'inactive';
 
