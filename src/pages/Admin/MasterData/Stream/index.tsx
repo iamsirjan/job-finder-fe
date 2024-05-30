@@ -60,6 +60,7 @@ const Stream = () => {
                   id: id,
                 });
                 useCommonStore.getState().setEditMode(true);
+                setStreamId(id);
               }}
             />
           )}
