@@ -12,7 +12,7 @@ const navItems = [
   {
     name: 'Master Data',
     icon: DashboardIcon,
-    to: NAVIGATION_ROUTES.MASTERDATA.DEGREE,
+    to: NAVIGATION_ROUTES.MASTERDATA.STREAM,
     visible: true,
     child: [
       {

@@ -4,10 +4,12 @@ import { useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
 import { FormButton } from 'components/button/FormButton';
 import { IDegreeResponse } from 'service/master/service-degree';
+
 type DegreeData = IDegreeResponse['results'][number];
 
 type Props = {
-  onDelete: ({ id, name }: { id: string; name: string }) => void;
+  onDelete: ({ id }: { id: string }) => void;
+  onEdit: ({ id }: { id: string }) => void;
 };
 
 export type HoverComponentProps<T extends Record<string, unknown>> = {
@@ -26,7 +28,15 @@ export const HoverComponent = (
         onClick={() =>
           props.onDelete({
             id: props.row.original.id,
-            name: props.row.original.name,
+          })
+        }
+      />
+      <FormButton
+        variant="primary"
+        title="Edit"
+        onClick={() =>
+          props.onEdit({
+            id: props.row.original.id,
           })
         }
       />
@@ -47,7 +57,7 @@ export const useDegreeColumn = () => {
       },
       {
         header: 'Stream',
-        cell: ({ row }) => <Text>{row.original.stream}</Text>,
+        cell: ({ row }) => <Text>{row.original.stream_name}</Text>,
       },
     ],
     [],
