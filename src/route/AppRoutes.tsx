@@ -10,6 +10,7 @@ import Layout from 'layout';
 import Dashboard from 'pages/Admin/Dashboard';
 import Degree from 'pages/Admin/MasterData/Degree';
 import Grade from 'pages/Admin/MasterData/Grade';
+import Stream from 'pages/Admin/MasterData/Stream';
 // import Layout from '../layout';
 
 const adminRoutes = [
@@ -22,6 +23,14 @@ const adminRoutes = [
     element: (
       <Layout>
         <Dashboard />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.MASTERDATA.STREAM,
+    element: (
+      <Layout>
+        <Stream />
       </Layout>
     ),
   },

@@ -3,11 +3,13 @@ import { ColumnDef } from '@tanstack/table-core';
 import { useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
 import { FormButton } from 'components/button/FormButton';
-import { IDegreeResponse } from 'service/master/service-degree';
-type DegreeData = IDegreeResponse['results'][number];
+import { IStreamResponse } from 'service/master/service-stream';
+
+type StreamData = IStreamResponse['results'][number];
 
 type Props = {
-  onDelete: ({ id, name }: { id: string; name: string }) => void;
+  onDelete: ({ id }: { id: string }) => void;
+  onEdit: ({ id }: { id: string }) => void;
 };
 
 export type HoverComponentProps<T extends Record<string, unknown>> = {
@@ -16,7 +18,7 @@ export type HoverComponentProps<T extends Record<string, unknown>> = {
 };
 
 export const HoverComponent = (
-  props: HoverComponentProps<DegreeData> & Props,
+  props: HoverComponentProps<StreamData> & Props,
 ) => {
   return (
     <HStack gap="0.5rem">
@@ -26,7 +28,15 @@ export const HoverComponent = (
         onClick={() =>
           props.onDelete({
             id: props.row.original.id,
-            name: props.row.original.name,
+          })
+        }
+      />
+      <FormButton
+        variant="primary"
+        title="Edit"
+        onClick={() =>
+          props.onEdit({
+            id: props.row.original.id,
           })
         }
       />
@@ -34,8 +44,8 @@ export const HoverComponent = (
   );
 };
 
-export const useDegreeColumn = () => {
-  const columns = useMemo<ColumnDef<DegreeData, any>[]>(
+export const useStreamColumn = () => {
+  const columns = useMemo<ColumnDef<StreamData, any>[]>(
     () => [
       {
         header: 'Index',
@@ -46,8 +56,8 @@ export const useDegreeColumn = () => {
         cell: ({ row }) => <Text>{row.original.name}</Text>,
       },
       {
-        header: 'Stream',
-        cell: ({ row }) => <Text>{row.original.stream}</Text>,
+        header: 'Description',
+        cell: ({ row }) => <Text>{row.original.description}</Text>,
       },
     ],
     [],

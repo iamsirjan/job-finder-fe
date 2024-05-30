@@ -1,4 +1,5 @@
 import { ModalProps } from '@chakra-ui/react';
+import { VARIANT } from 'components/types';
 import { ReactNode } from 'react';
 
 export interface IModalProps {
@@ -17,4 +18,5 @@ export interface IModalProps {
   //   reject?: ReactNode;
   secondaryText?: string;
   size?: ModalProps['size'];
+  variant?: VARIANT;
 }

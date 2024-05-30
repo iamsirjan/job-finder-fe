@@ -1,0 +1,3 @@
+type ICommonState = {
+  isEditMode: boolean;
+};

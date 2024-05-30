@@ -22,7 +22,7 @@ const ModalComponent = ({
   size,
   isLoading,
   footer,
-
+  variant = 'primary',
   alignment,
 }: IModalProps) => {
   return (
@@ -41,7 +41,7 @@ const ModalComponent = ({
           <ModalBody style={{ textAlign: alignment }}>{children}</ModalBody>
 
           <ModalFooter w={'full'}>
-            {footer || (
+            {footer && (
               <>
                 <Button mr={3} variant={'outline'} onClick={onClose} flex={1}>
                   {secondaryText}
@@ -52,6 +52,7 @@ const ModalComponent = ({
                   onClick={onApiCall || onClose}
                   isLoading={isLoading}
                   flex={1}
+                  variant={variant}
                 >
                   {primaryText}
                 </Button>

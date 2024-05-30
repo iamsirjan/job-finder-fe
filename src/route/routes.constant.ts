@@ -7,5 +7,6 @@ export const NAVIGATION_ROUTES = {
   MASTERDATA: {
     DEGREE: '/degree',
     GRADE: '/grade',
+    STREAM: '/stream',
   },
 };

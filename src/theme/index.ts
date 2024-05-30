@@ -9,6 +9,7 @@ import { FormButtonTheme } from './button-theme/FormButton.theme';
 import { SmallButtonTheme } from './button-theme/SmallButton.theme';
 import { SearchTheme } from './Search.theme';
 import { ListingButtonTheme } from './button-theme/ListingButton.theme';
+import { buttonTheme } from './button';
 
 export const theme = extendTheme({
   styles: {
@@ -40,6 +41,7 @@ export const theme = extendTheme({
     },
   },
   components: {
+    Button: buttonTheme,
     Layout: LayoutTheme,
     PageHeader: PageHeaderTheme,
     ListingButton: ListingButtonTheme,

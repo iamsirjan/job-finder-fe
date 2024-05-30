@@ -7,15 +7,8 @@ import { useGetDegreeList } from 'service/master/service-degree';
 
 const Degree = () => {
   const column = useDegreeColumn();
-  const degree = useGetDegreeList();
-  console.log(degree);
-  const data = [
-    {
-      id: '1',
-      stream: 'science',
-      name: 'Master',
-    },
-  ];
+  const { data: degreeData, isLoading } = useGetDegreeList();
+  console.log(degreeData);
 
   const onDelete = ({ id, name }: { id: string; name: string }) => {
     console.log(id, name);
@@ -33,7 +26,8 @@ const Degree = () => {
         />
         <Divider mb={10} />
         <Table
-          data={data ?? []}
+          isLoading={isLoading}
+          data={degreeData?.results ?? []}
           columns={column}
           hoverComponent={(props) => (
             <HoverComponent {...props} onDelete={onDelete} />

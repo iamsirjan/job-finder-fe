@@ -23,6 +23,8 @@ export default defineConfig({
       pages: '/src/pages',
       layout: '/src/layout',
       assets: '/src/assets',
+      utils: '/src/utils',
+      state: '/src/state',
     },
   },
 });

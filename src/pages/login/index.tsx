@@ -68,7 +68,7 @@ const Login = () => {
                   type="submit"
                   w={'100%'}
                   alignSelf={'self-start'}
-                  background={'main.100'}
+
                   // isLoading={isLoading}
                 >
                   {'Login'}
