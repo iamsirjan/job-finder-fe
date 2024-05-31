@@ -33,6 +33,18 @@ const navItems = [
         icon: DashboardIcon,
         visible: true,
       },
+      {
+        name: 'Subject',
+        to: NAVIGATION_ROUTES.MASTERDATA.SUBJECT,
+        icon: DashboardIcon,
+        visible: true,
+      },
+      {
+        name: 'University',
+        to: NAVIGATION_ROUTES.MASTERDATA.UNIVERSITY,
+        icon: DashboardIcon,
+        visible: true,
+      },
     ],
   },
 ];

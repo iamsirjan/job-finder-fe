@@ -8,5 +8,7 @@ export const NAVIGATION_ROUTES = {
     DEGREE: '/degree',
     GRADE: '/grade',
     STREAM: '/stream',
+    SUBJECT: '/subject',
+    UNIVERSITY: '/university',
   },
 };

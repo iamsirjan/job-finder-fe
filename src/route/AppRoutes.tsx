@@ -11,6 +11,8 @@ import Dashboard from 'pages/Admin/Dashboard';
 import Degree from 'pages/Admin/MasterData/Degree';
 import Grade from 'pages/Admin/MasterData/Grade';
 import Stream from 'pages/Admin/MasterData/Stream';
+import Subject from 'pages/Admin/MasterData/Subject';
+import University from 'pages/Admin/MasterData/University';
 // import Layout from '../layout';
 
 const adminRoutes = [
@@ -47,6 +49,22 @@ const adminRoutes = [
     element: (
       <Layout>
         <Grade />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.MASTERDATA.SUBJECT,
+    element: (
+      <Layout>
+        <Subject />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.MASTERDATA.UNIVERSITY,
+    element: (
+      <Layout>
+        <University />
       </Layout>
     ),
   },
