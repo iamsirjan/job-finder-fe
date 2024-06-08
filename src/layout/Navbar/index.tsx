@@ -6,6 +6,7 @@ import {
   Button,
   useColorModeValue,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { NAVIGATION_ROUTES } from '../../route/routes.constant';
@@ -53,16 +54,28 @@ const Navbar = () => {
           </HStack>
           <Flex alignItems={'center'}>
             {!isAuthenticated ? (
-              <RouterLink to={NAVIGATION_ROUTES.LOGIN}>
-                <Button
-                  variant={'outline'}
-                  colorScheme={'main.100'}
-                  size={'sm'}
-                  mr={4}
-                >
-                  Login
-                </Button>
-              </RouterLink>
+              <HStack>
+                <RouterLink to={NAVIGATION_ROUTES.LOGIN}>
+                  <Button
+                    variant={'outline'}
+                    colorScheme={'main.100'}
+                    size={'sm'}
+                    mr={4}
+                  >
+                    Login
+                  </Button>
+                </RouterLink>
+                <RouterLink to={NAVIGATION_ROUTES.REGISTER}>
+                  <Button
+                    variant={'outline'}
+                    colorScheme={'main.100'}
+                    size={'sm'}
+                    mr={4}
+                  >
+                    Register
+                  </Button>
+                </RouterLink>
+              </HStack>
             ) : (
               <RouterLink to={NAVIGATION_ROUTES.DASHBOARD}>
                 <Button

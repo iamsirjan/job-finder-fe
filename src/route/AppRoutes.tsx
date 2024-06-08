@@ -1,7 +1,7 @@
 import { useRoutes } from 'react-router-dom';
 import { NAVIGATION_ROUTES } from './routes.constant';
 import { Suspense } from 'react';
-import Register from '../pages/Register';
+import Register from '../pages/Register/common';
 import { useAuthentication } from '../service/service-auth';
 import { Center, Spinner } from '@chakra-ui/react';
 import Home from '../pages/Home';
@@ -13,6 +13,9 @@ import Grade from 'pages/Admin/MasterData/Grade';
 import Stream from 'pages/Admin/MasterData/Stream';
 import Subject from 'pages/Admin/MasterData/Subject';
 import University from 'pages/Admin/MasterData/University';
+import TokenService from 'service/service-token';
+import TeacherRegistration from 'pages/Register/TeacherRegistration';
+import { useGetUserDetails } from 'service/service-user';
 // import Layout from '../layout';
 
 const adminRoutes = [
@@ -84,12 +87,26 @@ const openRoutes = [
     element: <Home />,
   },
 ];
+
+const teacherRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <TeacherRegistration />,
+  },
+];
 // const protectedRoutes = [];
 
 const AppRoutes = () => {
   const { data: isAuthenticated, isLoading } = useAuthentication();
-
-  const element = useRoutes(isAuthenticated ? adminRoutes : openRoutes);
+  const userDetails = useGetUserDetails();
+  const element = useRoutes(
+    isAuthenticated
+      ? TokenService.getUserDetails().is_teacher &&
+        !userDetails.data?.user_details.is_registered
+        ? teacherRegistrationRoute
+        : adminRoutes
+      : openRoutes,
+  );
 
   if (isLoading) {
     return (

@@ -6,15 +6,14 @@ const baseStyles = {
   borderRadius: '6px',
   transition: 'all 300ms ease-in-out',
   minWidth: '100px',
-  maxWidth: 'fit-content',
 };
 
 const primary = defineStyle({
   ...baseStyles,
-  background: THEME_COLORS.primary[500],
+  background: THEME_COLORS.primary[1000],
   color: 'white',
   _hover: {
-    background: 'primary.400',
+    background: 'primary.1000',
     _disabled: {
       backgroundColor: `${THEME_COLORS.primary[500]} `,
     },

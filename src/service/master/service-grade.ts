@@ -26,6 +26,11 @@ export interface IGradeRequest {
   name: string;
 }
 
+export interface IAllGradeResponse {
+  id: string;
+  name: string;
+}
+
 const getGradeList = async () => {
   const { data } = await HttpClient.get<ApiResponse<IGradeResponse>>(api.grade);
   return data.data;
@@ -117,5 +122,18 @@ export const useUpdateGradeData = () => {
       const errorMessage = extractErrorMessage(gradeErr.response?.data?.errors);
       toastFail(errorMessage);
     },
+  });
+};
+
+const getAllGradeList = async () => {
+  const { data } = await HttpClient.get<ApiResponse<IAllGradeResponse[]>>(
+    api.allGrade,
+  );
+  return data.data;
+};
+
+export const useGetAllGradeList = () => {
+  return useQuery([gradeFetchQuery], () => getAllGradeList(), {
+    keepPreviousData: true,
   });
 };

@@ -26,6 +26,11 @@ export interface ISubjectRequest {
   name: string;
 }
 
+export interface IAllSubjectResponse {
+  id: string;
+  name: string;
+}
+
 const getSubjectList = async () => {
   const { data } = await HttpClient.get<ApiResponse<ISubjectResponse>>(
     api.subject,
@@ -123,5 +128,18 @@ export const useUpdateSubjectData = () => {
       );
       toastFail(errorMessage);
     },
+  });
+};
+
+const getAllSubjectList = async () => {
+  const { data } = await HttpClient.get<ApiResponse<IAllSubjectResponse[]>>(
+    api.allSubject,
+  );
+  return data.data;
+};
+
+export const useGetAllSubjectList = () => {
+  return useQuery([subjectFetchQuery], () => getAllSubjectList(), {
+    keepPreviousData: true,
   });
 };

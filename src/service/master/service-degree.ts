@@ -25,6 +25,12 @@ export interface IDegreeResponse {
   }[];
 }
 
+export interface IAllDegreeResponse {
+  id: string;
+  name: string;
+  stream: string;
+  stream_name: string;
+}
 export interface IDegreeRequest {
   name: string;
   stream: string;
@@ -127,5 +133,18 @@ export const useUpdateDegreeData = () => {
       );
       toastFail(errorMessage);
     },
+  });
+};
+
+const getAllDegreeList = async () => {
+  const { data } = await HttpClient.get<ApiResponse<IAllDegreeResponse[]>>(
+    api.allDegree,
+  );
+  return data.data;
+};
+
+export const useGetAllDegreeList = () => {
+  return useQuery([degreeFetchQuery], () => getAllDegreeList(), {
+    keepPreviousData: true,
   });
 };
