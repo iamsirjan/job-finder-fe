@@ -6,11 +6,10 @@ import {
   Button,
   useColorModeValue,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { NAVIGATION_ROUTES } from '../../route/routes.constant';
-import { useAuthentication } from 'service/service-auth';
+import { useAuthentication, useLogoutMutation } from 'service/service-auth';
 
 const Links = ['Staffs', 'Admission', 'Education'];
 
@@ -33,7 +32,11 @@ const NavLink = ({ children }: INavbar) => (
 
 const Navbar = () => {
   const { data: isAuthenticated } = useAuthentication();
+  const logout = useLogoutMutation();
 
+  const handleLogout = async () => {
+    await logout.mutateAsync();
+  };
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -77,16 +80,27 @@ const Navbar = () => {
                 </RouterLink>
               </HStack>
             ) : (
-              <RouterLink to={NAVIGATION_ROUTES.DASHBOARD}>
+              <>
                 <Button
                   variant={'outline'}
                   colorScheme={'main.100'}
                   size={'sm'}
+                  onClick={() => handleLogout()}
                   mr={4}
                 >
-                  Dashboard
+                  Logout
                 </Button>
-              </RouterLink>
+                <RouterLink to={NAVIGATION_ROUTES.DASHBOARD}>
+                  <Button
+                    variant={'outline'}
+                    colorScheme={'main.100'}
+                    size={'sm'}
+                    mr={4}
+                  >
+                    Dashboard
+                  </Button>
+                </RouterLink>
+              </>
             )}
           </Flex>
         </Flex>

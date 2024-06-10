@@ -36,13 +36,13 @@ const Login = () => {
     });
   };
   return (
-    <Wrapper showNavbar={false}>
+    <Wrapper>
       <Box
         display="flex"
         flexDirection={'column'}
         justifyContent={'center'}
         alignItems="center"
-        height={{ base: 'auto', md: '100vh' }}
+        height={{ base: 'auto', md: '70vh' }}
       >
         <Box bg="#fff" w={'30%'} padding={'40px 40px'} borderRadius={'6px'}>
           <Flex justifyContent={'center'}>
@@ -68,8 +68,7 @@ const Login = () => {
                   type="submit"
                   w={'100%'}
                   alignSelf={'self-start'}
-
-                  // isLoading={isLoading}
+                  isLoading={login.isLoading}
                 >
                   {'Login'}
                 </Button>

@@ -9,13 +9,13 @@ import {
 import Wrapper from 'wrapper';
 import FirstStep from './firstStep';
 import SecondStep from './secondStep';
-import ThirdStep from './thirdStep';
+
 import { useRegistrationStore } from 'state/registration.state';
 import { useEffect } from 'react';
 import { THEME_COLORS } from 'theme/color';
 import { useGetUserDetails } from 'service/service-user';
 
-const TeacherRegistration = () => {
+const StudentStep = () => {
   const step = useRegistrationStore((state) => state);
 
   const userDetails = useGetUserDetails();
@@ -29,8 +29,7 @@ const TeacherRegistration = () => {
         return <FirstStep />;
       case 2:
         return <SecondStep />;
-      case 3:
-        return <ThirdStep />;
+
       default:
         return <FirstStep />; // Default to the first step
     }
@@ -39,7 +38,7 @@ const TeacherRegistration = () => {
     <Wrapper showNavbar={false}>
       <Flex justifyContent={'center'} alignItems={'center'} w="100%">
         <Flex flexDirection={'column'}>
-          <Slider w={'100%'} min={0} max={3} value={step.step}>
+          <Slider w={'100%'} min={0} max={2} value={step.step}>
             <SliderTrack height={'6px'} borderRadius="6px">
               <SliderFilledTrack
                 borderRadius={'6px'}
@@ -60,4 +59,4 @@ const TeacherRegistration = () => {
   );
 };
 
-export default TeacherRegistration;
+export default StudentStep;

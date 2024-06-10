@@ -27,6 +27,7 @@ export default defineConfig({
       state: '/src/state',
       route: '/src/route',
       theme: '/src/theme',
+      hooks: '/src/hooks',
     },
   },
 });

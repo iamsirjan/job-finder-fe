@@ -33,11 +33,12 @@ const danger = defineStyle({
 
 const outline = defineStyle({
   ...baseStyles,
-  color: THEME_COLORS.primary[500],
+  color: '#000',
   _hover: {
-    background: 'transparent',
+    background: 'primary.1000',
+    color: '#fff',
   },
-  borderColor: THEME_COLORS.primary[500],
+  borderColor: 'primary.1000',
 });
 
 export const buttonTheme = defineStyleConfig({

@@ -33,10 +33,6 @@ export const USERTYPE = [
     label: 'Agent',
     value: '4',
   },
-  {
-    label: 'Admin',
-    value: '5',
-  },
 ];
 
 const registerUser = async (body: IRegisterUserRequest) => {
@@ -56,7 +52,7 @@ export const useRegisterUser = () => {
     },
     onError: (error) => {
       const err = error as AxiosError<{ message: string; errors: [] }>;
-
+      console.log(err);
       const errMessage = extractErrorMessage(err.response?.data.errors);
       toastFail(errMessage);
     },

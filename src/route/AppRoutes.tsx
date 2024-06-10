@@ -13,10 +13,11 @@ import Grade from 'pages/Admin/MasterData/Grade';
 import Stream from 'pages/Admin/MasterData/Stream';
 import Subject from 'pages/Admin/MasterData/Subject';
 import University from 'pages/Admin/MasterData/University';
-import TokenService from 'service/service-token';
 import TeacherRegistration from 'pages/Register/TeacherRegistration';
 import { useGetUserDetails } from 'service/service-user';
-// import Layout from '../layout';
+import OrganizationStep from 'pages/Register/OrganizationRegistration';
+import StudentStep from 'pages/Register/StudentRegistration';
+import AgentStep from 'pages/Register/AgentRegistration';
 
 const adminRoutes = [
   {
@@ -94,19 +95,51 @@ const teacherRegistrationRoute = [
     element: <TeacherRegistration />,
   },
 ];
-// const protectedRoutes = [];
+
+const organizationRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <OrganizationStep />,
+  },
+];
+
+const studentRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <StudentStep />,
+  },
+];
+
+const agentRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <AgentStep />,
+  },
+];
 
 const AppRoutes = () => {
   const { data: isAuthenticated, isLoading } = useAuthentication();
   const userDetails = useGetUserDetails();
-  const element = useRoutes(
-    isAuthenticated
-      ? TokenService.getUserDetails().is_teacher &&
-        !userDetails.data?.user_details.is_registered
-        ? teacherRegistrationRoute
-        : adminRoutes
-      : openRoutes,
-  );
+  const isRegistered = userDetails.data?.is_registered;
+  const is_teacher = userDetails.data?.is_teacher;
+  const is_organization = userDetails.data?.is_organization;
+  const is_student = userDetails.data?.is_student;
+  const is_agent = userDetails.data?.is_agent;
+
+  console.log(is_organization && !isRegistered);
+  const routes = isAuthenticated
+    ? is_teacher && !isRegistered
+      ? teacherRegistrationRoute
+      : is_organization && !isRegistered
+        ? organizationRegistrationRoute
+        : is_student && !isRegistered
+          ? studentRegistrationRoute
+          : is_agent && !isRegistered
+            ? agentRegistrationRoute
+            : adminRoutes
+    : openRoutes;
+
+  const element = useRoutes(routes);
 
   if (isLoading) {
     return (

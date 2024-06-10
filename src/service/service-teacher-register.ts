@@ -6,6 +6,7 @@ import { extractErrorMessage } from 'utils/errorHandler';
 import { toastFail } from './service-toast';
 import { useRegistrationStore } from 'state/registration.state';
 import { ISecondStep } from 'pages/Register/TeacherRegistration/secondStep/interface';
+import { IThirdStep } from 'pages/Register/TeacherRegistration/thirdStep/interface';
 
 const registerTeacherStepFirst = async (body: IFirstStep) => {
   const response = await HttpClient.post<ApiResponse<IFirstStep>>(
@@ -59,7 +60,7 @@ export const useRegisterTeacherStepSecond = () => {
 };
 
 const registerTeacherStepThird = async (body: FormData) => {
-  const response = await HttpClient.patch<ApiResponse<ISecondStep>>(
+  const response = await HttpClient.patch<ApiResponse<IThirdStep>>(
     api.uploadProfile,
     body,
   );

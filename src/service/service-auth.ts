@@ -75,6 +75,7 @@ const useLoginMutation = () => {
       TokenService.setToken(tokens.token);
       localStorage.setItem('userDetails', JSON.stringify(response.data.data));
       queryClient.setQueryData(authTokenKey, () => true);
+      queryClient.invalidateQueries('user');
       navigate('/');
       toastSuccess('Login Successful!!');
     },
