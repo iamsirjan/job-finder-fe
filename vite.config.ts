@@ -13,6 +13,7 @@ export default defineConfig({
   server: {
     port: 3000,
     host: 'localhost',
+    open: true,
   },
   resolve: {
     alias: {
@@ -25,6 +26,9 @@ export default defineConfig({
       assets: '/src/assets',
       utils: '/src/utils',
       state: '/src/state',
+      route: '/src/route',
+      theme: '/src/theme',
+      hooks: '/src/hooks',
     },
   },
 });

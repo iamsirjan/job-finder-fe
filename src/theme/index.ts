@@ -10,6 +10,8 @@ import { SmallButtonTheme } from './button-theme/SmallButton.theme';
 import { SearchTheme } from './Search.theme';
 import { ListingButtonTheme } from './button-theme/ListingButton.theme';
 import { buttonTheme } from './button';
+import { FormFieldTheme } from './FormField.theme';
+import { FrameWorkDropdownTheme } from './Dropdown.theme';
 
 export const theme = extendTheme({
   styles: {
@@ -50,5 +52,7 @@ export const theme = extendTheme({
     IconButton: IconButtonTheme,
     SmallButton: SmallButtonTheme,
     Search: SearchTheme,
+    FormField: FormFieldTheme,
+    FrameWorkDropdownTheme: FrameWorkDropdownTheme,
   },
 });

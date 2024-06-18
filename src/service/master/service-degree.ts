@@ -10,7 +10,6 @@ export const degreeFetchQuery = 'degree';
 export interface IDegree {
   id?: string;
   name: string;
-  stream: string;
 }
 export interface IDegreeResponse {
   count: number;
@@ -20,14 +19,15 @@ export interface IDegreeResponse {
   results: {
     id: string;
     name: string;
-    stream: string;
-    stream_name: string;
   }[];
 }
 
+export interface IAllDegreeResponse {
+  id: string;
+  name: string;
+}
 export interface IDegreeRequest {
   name: string;
-  stream: string;
 }
 
 const getDegreeList = async () => {
@@ -127,5 +127,18 @@ export const useUpdateDegreeData = () => {
       );
       toastFail(errorMessage);
     },
+  });
+};
+
+const getAllDegreeList = async () => {
+  const { data } = await HttpClient.get<ApiResponse<IAllDegreeResponse[]>>(
+    api.allDegree,
+  );
+  return data.data;
+};
+
+export const useGetAllDegreeList = () => {
+  return useQuery([degreeFetchQuery], () => getAllDegreeList(), {
+    keepPreviousData: true,
   });
 };

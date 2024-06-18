@@ -8,6 +8,12 @@ const navItems = [
     icon: DashboardIcon,
     visible: true,
   },
+  {
+    name: 'Vacancy',
+    to: NAVIGATION_ROUTES.VACANCY.GET,
+    icon: DashboardIcon,
+    visible: true,
+  },
 
   {
     name: 'Master Data',
@@ -15,12 +21,6 @@ const navItems = [
     to: NAVIGATION_ROUTES.MASTERDATA.STREAM,
     visible: true,
     child: [
-      {
-        name: 'Stream',
-        to: NAVIGATION_ROUTES.MASTERDATA.STREAM,
-        icon: DashboardIcon,
-        visible: true,
-      },
       {
         name: 'Degree',
         to: NAVIGATION_ROUTES.MASTERDATA.DEGREE,

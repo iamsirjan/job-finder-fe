@@ -58,7 +58,7 @@ export const getRole = () => {
 
 const getUserDetails = () => {
   const item = localStorage.getItem('userDetails');
-  const response = JSON.parse(item || '') as { user: IUserResponse };
+  const response = JSON.parse(item || '') as IUserResponse;
   return response;
 };
 

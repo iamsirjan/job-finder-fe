@@ -9,6 +9,7 @@ import { BroadcastChannel } from 'broadcast-channel';
 import { HttpClient } from './service-axios';
 import { toastFail, toastSuccess } from './service-toast';
 import { NAVIGATION_ROUTES } from '../route/routes.constant';
+import { extractErrorMessage } from 'utils/errorHandler';
 
 const logoutChannel = new BroadcastChannel('logout');
 const loginChannel = new BroadcastChannel('login');
@@ -27,6 +28,8 @@ export interface IUserResponse {
   is_student: boolean;
   is_superuser: boolean;
   is_teacher: boolean;
+  step_of_registration: number;
+  is_registered: boolean;
 }
 export const authTokenKey = 'authToken';
 export const auth = 'userInfo';
@@ -72,16 +75,15 @@ const useLoginMutation = () => {
       TokenService.setToken(tokens.token);
       localStorage.setItem('userDetails', JSON.stringify(response.data.data));
       queryClient.setQueryData(authTokenKey, () => true);
+      queryClient.invalidateQueries('user');
       navigate('/');
       toastSuccess('Login Successful!!');
     },
     onError: (error) => {
-      const loginErr = error as AxiosError<{ message: string; error: string }>;
-      toastFail(
-        loginErr.response?.data?.message ??
-          loginErr.response?.data?.error ??
-          'Login failed !',
-      );
+      const err = error as AxiosError<{ message: string; errors: [] }>;
+
+      const errMessage = extractErrorMessage(err.response?.data.errors);
+      toastFail(errMessage);
     },
   });
 };

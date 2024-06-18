@@ -23,7 +23,7 @@ const Provider = ({ children }: IProvider) => {
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <Toaster position="top-right" />
+          <Toaster position="bottom-right" />
           <HelmetProvider>{children}</HelmetProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
