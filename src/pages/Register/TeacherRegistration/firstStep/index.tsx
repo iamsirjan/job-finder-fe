@@ -4,6 +4,7 @@ import Form from './form';
 import { DefaultValues, FormValidation } from './constant';
 import { useRegisterTeacherStepFirst } from 'service/service-teacher-register';
 import TokenService from 'service/service-token';
+import { IFirstStep } from './interface';
 
 const FirstStep = () => {
   const register = useRegisterTeacherStepFirst();

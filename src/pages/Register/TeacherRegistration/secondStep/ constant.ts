@@ -16,4 +16,8 @@ export const DefaultValues = {
   grade: [],
   subject: [],
   documents: [],
+  citizen_ship: [],
+  cv: [],
+  can_work_in_village: false,
+  can_work_in_city: false,
 };

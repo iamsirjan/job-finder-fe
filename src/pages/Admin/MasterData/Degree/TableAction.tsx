@@ -55,10 +55,6 @@ export const useDegreeColumn = () => {
         header: 'Name',
         cell: ({ row }) => <Text>{row.original.name}</Text>,
       },
-      {
-        header: 'Stream',
-        cell: ({ row }) => <Text>{row.original.stream_name}</Text>,
-      },
     ],
     [],
   );

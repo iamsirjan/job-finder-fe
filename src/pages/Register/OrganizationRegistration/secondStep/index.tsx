@@ -19,7 +19,7 @@ const SecondStep = () => {
       >
         <Form />
         <Button
-          isLoading={register.isLoading}
+          isLoading={registration.isLoading}
           type="submit"
           mt={5}
           width={'100%'}

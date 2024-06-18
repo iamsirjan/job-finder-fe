@@ -27,6 +27,21 @@ const SecondStep = () => {
       formData.append('documents', file);
     });
 
+    data.cv.forEach((file: File) => {
+      formData.append('cv', file);
+    });
+    data.citizen_ship.forEach((file: File) => {
+      formData.append('citizen_ship', file);
+    });
+
+    formData.append(
+      'can_work_in_village',
+      data.can_work_in_village ? 'true' : 'false',
+    );
+    formData.append(
+      'can_work_in_city',
+      data.can_work_in_city ? 'true' : 'false',
+    );
     await register.mutateAsync(formData);
   };
 

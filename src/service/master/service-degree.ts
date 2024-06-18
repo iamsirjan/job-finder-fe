@@ -10,7 +10,6 @@ export const degreeFetchQuery = 'degree';
 export interface IDegree {
   id?: string;
   name: string;
-  stream: string;
 }
 export interface IDegreeResponse {
   count: number;
@@ -20,20 +19,15 @@ export interface IDegreeResponse {
   results: {
     id: string;
     name: string;
-    stream: string;
-    stream_name: string;
   }[];
 }
 
 export interface IAllDegreeResponse {
   id: string;
   name: string;
-  stream: string;
-  stream_name: string;
 }
 export interface IDegreeRequest {
   name: string;
-  stream: string;
 }
 
 const getDegreeList = async () => {

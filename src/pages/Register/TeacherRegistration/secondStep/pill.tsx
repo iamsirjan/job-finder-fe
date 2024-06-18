@@ -25,6 +25,7 @@ const PillButton: React.FC<PillButtonProps> = ({ values, onChange }) => {
       {values.map((value) => (
         <button
           key={value.id}
+          type="button"
           onClick={() => handleToggle(value.id)}
           className={selectedValues.includes(value.id) ? 'selected' : ''}
           style={{

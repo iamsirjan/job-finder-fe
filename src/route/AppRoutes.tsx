@@ -18,6 +18,13 @@ import { useGetUserDetails } from 'service/service-user';
 import OrganizationStep from 'pages/Register/OrganizationRegistration';
 import StudentStep from 'pages/Register/StudentRegistration';
 import AgentStep from 'pages/Register/AgentRegistration';
+import Vacancy from 'pages/Organization/Vacancy';
+import AddVacancy from 'pages/Organization/Vacancy/AddVacancy';
+import Staffs from 'pages/Staffs';
+import Admission from 'pages/Admission';
+import Education from 'pages/Education';
+import CourseList from 'pages/Education/CourseList';
+import LessonList from 'pages/Education/LessonList';
 
 const adminRoutes = [
   {
@@ -25,10 +32,46 @@ const adminRoutes = [
     element: <Home />,
   },
   {
+    path: NAVIGATION_ROUTES.STAFFS,
+    element: <Staffs />,
+  },
+  {
+    path: NAVIGATION_ROUTES.ADMISSION,
+    element: <Admission />,
+  },
+  {
+    path: NAVIGATION_ROUTES.EDUCATION,
+    element: <Education />,
+  },
+  {
+    path: NAVIGATION_ROUTES.COURSE,
+    element: <CourseList />,
+  },
+  {
+    path: NAVIGATION_ROUTES.LESSON,
+    element: <LessonList />,
+  },
+  {
     path: NAVIGATION_ROUTES.DASHBOARD,
     element: (
       <Layout>
         <Dashboard />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.VACANCY.GET,
+    element: (
+      <Layout>
+        <Vacancy />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.VACANCY.ADD,
+    element: (
+      <Layout>
+        <AddVacancy />
       </Layout>
     ),
   },
@@ -86,6 +129,26 @@ const openRoutes = [
   {
     path: NAVIGATION_ROUTES.BASE,
     element: <Home />,
+  },
+  {
+    path: NAVIGATION_ROUTES.STAFFS,
+    element: <Staffs />,
+  },
+  {
+    path: NAVIGATION_ROUTES.ADMISSION,
+    element: <Admission />,
+  },
+  {
+    path: NAVIGATION_ROUTES.EDUCATION,
+    element: <Education />,
+  },
+  {
+    path: NAVIGATION_ROUTES.COURSE,
+    element: <CourseList />,
+  },
+  {
+    path: NAVIGATION_ROUTES.LESSON,
+    element: <LessonList />,
   },
 ];
 

@@ -1,24 +1,24 @@
 import { useState } from 'react';
 import { Flex, Text, useDisclosure, Textarea } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import CardComponent from 'components/card';
 import Wrapper from '../../wrapper';
+import { useApplyVacancy } from 'service/vacancy/service-vacancy';
 import {
-  useApplyVacancy,
-  useGetVacancyList,
-} from 'service/vacancy/service-vacancy';
-import { useGetTeacherDetails } from 'service/service-teacher-register';
+  useGetAllTeacherDetails,
+  useGetTeacherDetails,
+} from 'service/service-teacher-register';
 import ModalComponent from 'components/modal';
 import FormField from 'components/form/FormField';
 import FormFooterButton from 'components/form/FormButton';
+import StaffCard from 'components/StaffCard';
 
 interface IFormInput {
   coverLetter: string;
 }
 
-const Home = () => {
-  const vacancy = useGetVacancyList();
+const Staffs = () => {
   const teacher = useGetTeacherDetails();
+  const staffs = useGetAllTeacherDetails();
   const applyVacancy = useApplyVacancy();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vacancyId, setVacancyID] = useState('');
@@ -51,14 +51,14 @@ const Home = () => {
   return (
     <Wrapper>
       <Flex gap={2} flexWrap={'wrap'}>
-        {vacancy.data?.data.data?.map((data) => (
-          <CardComponent
-            address={data.organization_full_detail.organization_detail.address}
-            img={data.organization_full_detail.organization_detail.profile_pic}
-            classes={data.grade}
-            id={data.id}
-            subject={data.subject}
-            name={data.organization_full_detail.organization_detail.name}
+        {staffs.data?.data.data.map((data) => (
+          <StaffCard
+            address={data.user_profile.user_details.address}
+            img={data.user_profile.profile_picture}
+            id={data.user_profile.id}
+            subject={data.teacher.subject}
+            classes={data.teacher.grade}
+            name={data.user_profile.first_name + data.user_profile.last_name}
             handleSendRequest={handleRequest}
           />
         ))}
@@ -95,4 +95,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Staffs;

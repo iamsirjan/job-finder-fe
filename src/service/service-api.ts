@@ -12,8 +12,11 @@ export const api = {
   subject: 'dashboard/subject/',
   university: 'dashboard/university/',
   teacher: {
-    registerStepFirst: 'teacher/register-teacher-step1/',
-    registerStepSecond: 'teacher/register-teacher-step2/',
+    registerStepFirst: 'teacher/register-teacher-step-1/',
+    registerStepSecond: 'teacher/register-teacher-step-2/',
+    teacherDetails: 'teacher/teacher-detail/',
+    applyVacancy: 'teacher/vacancy-apply/',
+    getAllTeacherDetails: 'teacher/get-all-teacher-details/',
   },
   organization: {
     registerOrganizationStepFirst:
@@ -26,13 +29,20 @@ export const api = {
       '/organization/register-organization-step-4/',
   },
   student: {
-    registerStudentStepFirst: '/student/student-register-step1/',
-    registerStudentStepSecond: '/student/student-register-step2/',
+    registerStudentStepFirst: '/student/student-register-step-1/',
+    registerStudentStepSecond: '/student/student-register-step-2/',
   },
   agent: {
     registerAgentStepFirst: '/organization/register-agent-step-1/',
     registerAgentStepSecond: '/organization/register-agent-step-2/',
   },
+  location: {
+    district: '/common/district/',
+    municipality: '/common/municipality',
+    province: '/common/province',
+  },
+
+  vacancy: '/organization/vacancy/',
 };
 
 export interface ApiResponse<T = any> {
