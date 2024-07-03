@@ -1,7 +1,7 @@
 import { Box, List, ListItem, Link, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import NavItem from './NavItem';
-import { navItems } from './navItemList';
+import { useNavigationItems } from './navItemList';
 import { webkit_scrollbar } from './style';
 import { NAVIGATION_ROUTES } from '../../route/routes.constant';
 import { useLogoutMutation } from 'service/service-auth';
@@ -14,6 +14,7 @@ const Sidebar = ({
   isHovered,
 }: ISidebar) => {
   const logout = useLogoutMutation();
+  const navItems = useNavigationItems();
 
   const handleLogout = async () => {
     await logout.mutateAsync();

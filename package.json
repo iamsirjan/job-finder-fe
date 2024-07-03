@@ -1,5 +1,6 @@
 {
   "name": "job-finder-fe",
+  "homepage": "https://www.schoolteacherjob.com",
   "private": true,
   "version": "0.0.0",
   "type": "module",

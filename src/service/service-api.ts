@@ -17,6 +17,9 @@ export const api = {
     teacherDetails: 'teacher/teacher-detail/',
     applyVacancy: 'teacher/vacancy-apply/',
     getAllTeacherDetails: 'teacher/get-all-teacher-details/',
+    appliedVacancy: 'teacher/get-applied-vacancy/',
+    jobOffer: 'teacher/job-offer/',
+    getMatchingVacancy: 'teacher/get-matching-vacancy/',
   },
   organization: {
     registerOrganizationStepFirst:
@@ -27,6 +30,9 @@ export const api = {
       '/organization/register-organization-step-3/',
     registerOrganizationStepFourth:
       '/organization/register-organization-step-4/',
+    sendOffer: '/organization/job-offer/',
+    sentOffer: '/organization/job-offer/',
+    receivedOffer: '/organization/get-all-teacher-vacancy-application/',
   },
   student: {
     registerStudentStepFirst: '/student/student-register-step-1/',

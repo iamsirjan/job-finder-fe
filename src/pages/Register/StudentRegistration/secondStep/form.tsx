@@ -3,13 +3,13 @@ import { Controller, useFormContext } from 'react-hook-form';
 import FileDropzone from 'components/form/Dropzone';
 import { VStack } from '@chakra-ui/react';
 import FormField from 'components/form/FormField';
-import { IAgentSecondStep } from './interface';
+import { IStudentSecondStep } from './interface';
 
 const Form = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<IAgentSecondStep>();
+  } = useFormContext<IStudentSecondStep>();
 
   return (
     <VStack gap={4}>

@@ -25,6 +25,11 @@ import Admission from 'pages/Admission';
 import Education from 'pages/Education';
 import CourseList from 'pages/Education/CourseList';
 import LessonList from 'pages/Education/LessonList';
+import ChatSent from 'pages/Organization/ChatSent';
+import ChatReceived from 'pages/Organization/ChatReceived';
+import ChatSentTeacher from 'pages/Teacher/Chat/ChatSent';
+import ChatReceivedTeacher from 'pages/Teacher/Chat/ChatReceived';
+import MatchingVacancy from 'pages/Teacher/MatchingVacancy';
 
 const adminRoutes = [
   {
@@ -112,6 +117,46 @@ const adminRoutes = [
     element: (
       <Layout>
         <University />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.CHAT.SENT,
+    element: (
+      <Layout>
+        <ChatSent />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.CHAT.RECEIVED,
+    element: (
+      <Layout>
+        <ChatReceived />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.CHATTEACHER.SENT,
+    element: (
+      <Layout>
+        <ChatSentTeacher />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.MATCHINGVACANCY,
+    element: (
+      <Layout>
+        <MatchingVacancy />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.CHATTEACHER.RECEIVED,
+    element: (
+      <Layout>
+        <ChatReceivedTeacher />
       </Layout>
     ),
   },

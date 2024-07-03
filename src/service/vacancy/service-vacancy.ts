@@ -14,10 +14,16 @@ import { extractErrorMessage } from 'utils/errorHandler';
 export const vacancyFetchQuery = 'vacancy';
 
 interface IVacancyApply {
-  teacher: string[];
+  teacher: string;
   cv: string;
   vacancy: string;
   cover_letter: string;
+}
+
+interface ISendJobOffer {
+  teacher: string;
+  vacancy: string;
+  is_offered: boolean;
 }
 
 const addVacancyData = async (data: IvacancyRequest) => {
@@ -72,10 +78,8 @@ export const useUpdateVacancyData = () => {
 };
 
 const getVacancyList = async () => {
-  const response = await HttpClient.get<ApiResponse<IVacancyResponse[]>>(
-    api.vacancy,
-  );
-  return response;
+  const { data } = await HttpClient.get<IVacancyResponse>(api.vacancy);
+  return data.data || [];
 };
 
 export const useGetVacancyList = () => {
@@ -85,9 +89,7 @@ export const useGetVacancyList = () => {
 };
 
 const getVacancyListById = async ({ id }: { id: string }) => {
-  const { data } = await HttpClient.get<ApiResponse<IVacancyResponse>>(
-    `${api.grade}${id}`,
-  );
+  const { data } = await HttpClient.get<IVacancyResponse>(`${api.grade}${id}`);
   return data.data;
 };
 
@@ -109,5 +111,34 @@ export const useApplyVacancy = () => {
     onSuccess: () => {
       toastSuccess('Job request sent');
     },
+  });
+};
+
+const sendJobOffer = async (data: ISendJobOffer) => {
+  const response = await HttpClient.post<ApiResponse>(
+    api.organization.sendOffer,
+    data,
+  );
+  return response;
+};
+
+export const useSendOffer = () => {
+  return useMutation(sendJobOffer, {
+    onSuccess: () => {
+      toastSuccess('Job Offer Send');
+    },
+  });
+};
+
+const getJobRequestList = async () => {
+  const response = await HttpClient.get<ApiResponse<IVacancyResponse[]>>(
+    api.organization.sendOffer,
+  );
+  return response;
+};
+
+export const useGetJobRequestList = () => {
+  return useQuery(['jobs'], () => getJobRequestList(), {
+    keepPreviousData: true,
   });
 };

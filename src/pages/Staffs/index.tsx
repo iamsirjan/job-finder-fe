@@ -1,27 +1,27 @@
 import { useState } from 'react';
-import { Flex, Text, useDisclosure, Textarea } from '@chakra-ui/react';
+import { Flex, Text, useDisclosure, Select } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Wrapper from '../../wrapper';
-import { useApplyVacancy } from 'service/vacancy/service-vacancy';
 import {
-  useGetAllTeacherDetails,
-  useGetTeacherDetails,
-} from 'service/service-teacher-register';
+  useGetVacancyList,
+  useSendOffer,
+} from 'service/vacancy/service-vacancy';
+import { useGetAllTeacherDetails } from 'service/service-teacher-register';
 import ModalComponent from 'components/modal';
 import FormField from 'components/form/FormField';
 import FormFooterButton from 'components/form/FormButton';
 import StaffCard from 'components/StaffCard';
 
 interface IFormInput {
-  coverLetter: string;
+  vacancy: string;
 }
 
 const Staffs = () => {
-  const teacher = useGetTeacherDetails();
   const staffs = useGetAllTeacherDetails();
-  const applyVacancy = useApplyVacancy();
+  const vacancy = useGetVacancyList();
+  const sendOffer = useSendOffer();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [vacancyId, setVacancyID] = useState('');
+  const [teacherId, setTeacherID] = useState('');
 
   // Initialize React Hook Form
   const {
@@ -32,11 +32,10 @@ const Staffs = () => {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    await applyVacancy.mutateAsync({
-      cover_letter: data.coverLetter,
-      cv: teacher.data?.data.data.cv[0].id.toString() ?? '',
-      teacher: [teacher.data?.data.data.user_profile.id.toString() ?? ''],
-      vacancy: vacancyId,
+    await sendOffer.mutateAsync({
+      teacher: teacherId,
+      vacancy: data.vacancy,
+      is_offered: true,
     });
 
     reset();
@@ -44,7 +43,7 @@ const Staffs = () => {
   };
 
   const handleRequest = (id: string) => {
-    setVacancyID(id);
+    setTeacherID(id);
     onOpen();
   };
 
@@ -58,28 +57,28 @@ const Staffs = () => {
             id={data.user_profile.id}
             subject={data.teacher.subject}
             classes={data.teacher.grade}
-            name={data.user_profile.first_name + data.user_profile.last_name}
+            name={
+              data.user_profile.first_name + ' ' + data.user_profile.last_name
+            }
             handleSendRequest={handleRequest}
           />
         ))}
       </Flex>
 
       <ModalComponent
-        heading={<Text>Send Cover Letter</Text>}
+        heading={<Text>Request Staffs</Text>}
         onClose={onClose}
         isOpen={isOpen}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormField label="Cover letter">
-            <Textarea
-              rows={6}
-              placeholder="Enter your cover letter"
-              {...register('coverLetter', {
-                required: 'Cover letter is required',
-              })}
-            />
-            {errors.coverLetter && (
-              <Text color="red.500">{errors.coverLetter.message}</Text>
+          <FormField label="Vacancy List">
+            <Select {...register('vacancy')} placeholder="Select option">
+              {vacancy?.data?.map((data) => (
+                <option value={data.id}>{data.subject}</option>
+              ))}
+            </Select>
+            {errors.vacancy && (
+              <Text color="red.500">{errors.vacancy.message}</Text>
             )}
           </FormField>
           <Flex justifyContent="flex-end" mt={4}>

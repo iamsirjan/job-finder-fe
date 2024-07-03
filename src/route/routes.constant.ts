@@ -21,4 +21,13 @@ export const NAVIGATION_ROUTES = {
     GET: '/vacancy',
     ADD: '/vacancy/add-vacancy',
   },
+  CHAT: {
+    SENT: '/job-request-sent',
+    RECEIVED: '/job-request-received',
+  },
+  CHATTEACHER: {
+    SENT: '/job-request-sent-teacher',
+    RECEIVED: '/job-request-received-teacher',
+  },
+  MATCHINGVACANCY: '/matching-vacancy',
 };

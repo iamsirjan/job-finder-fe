@@ -13,6 +13,10 @@ import { useAuthentication, useLogoutMutation } from 'service/service-auth';
 
 const Links = [
   {
+    label: 'Jobs',
+    link: NAVIGATION_ROUTES.BASE,
+  },
+  {
     label: 'Staffs',
     link: NAVIGATION_ROUTES.STAFFS,
   },

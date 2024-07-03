@@ -35,7 +35,7 @@ const Home = () => {
     await applyVacancy.mutateAsync({
       cover_letter: data.coverLetter,
       cv: teacher.data?.data.data.cv[0].id.toString() ?? '',
-      teacher: [teacher.data?.data.data.user_profile.id.toString() ?? ''],
+      teacher: teacher.data?.data.data.user_profile.id.toString() ?? '',
       vacancy: vacancyId,
     });
 
@@ -45,23 +45,25 @@ const Home = () => {
 
   const handleRequest = (id: string) => {
     setVacancyID(id);
+
     onOpen();
   };
 
   return (
     <Wrapper>
       <Flex gap={2} flexWrap={'wrap'}>
-        {vacancy.data?.data.data?.map((data) => (
-          <CardComponent
-            address={data.organization_full_detail.organization_detail.address}
-            img={data.organization_full_detail.organization_detail.profile_pic}
-            classes={data.grade}
-            id={data.id}
-            subject={data.subject}
-            name={data.organization_full_detail.organization_detail.name}
-            handleSendRequest={handleRequest}
-          />
-        ))}
+        {vacancy?.data &&
+          vacancy.data.map((data) => (
+            <CardComponent
+              address={data.organization.organization_detail.address}
+              img={data.organization.organization_detail.profile_pic}
+              classes={data.grade}
+              id={data.id}
+              subject={data.subject}
+              name={data.organization.organization_detail.name}
+              handleSendRequest={handleRequest}
+            />
+          ))}
       </Flex>
 
       <ModalComponent

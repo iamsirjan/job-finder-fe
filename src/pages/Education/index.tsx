@@ -1,16 +1,16 @@
 import { Flex } from '@chakra-ui/react';
 import Wrapper from '../../wrapper';
-import { useGetVacancyList } from 'service/vacancy/service-vacancy';
-import { useGetTeacherDetails } from 'service/service-teacher-register';
+// import { useGetVacancyList } from 'service/vacancy/service-vacancy';
+// import { useGetTeacherDetails } from 'service/service-teacher-register';
 
 import EducationCard from 'components/EducationCard';
 
 const Education = () => {
-  const vacancy = useGetVacancyList();
-  const teacher = useGetTeacherDetails();
+  // const vacancy = useGetVacancyList();
+  // const teacher = useGetTeacherDetails();
 
   const handleRequest = (id: string) => {
-    //
+    console.log(id);
   };
 
   const data = [

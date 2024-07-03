@@ -10,7 +10,8 @@ import { useGetVacancyList } from 'service/vacancy/service-vacancy';
 const Vacancy = () => {
   const column = useVacancyColumn();
   const navigate = useNavigate();
-  const vacancy = useGetVacancyList();
+  const { data: vacancy } = useGetVacancyList();
+  const data = Array.isArray(vacancy) ? vacancy : [];
   return (
     <Layout>
       <VStack h="inherit" spacing={0} bg="container.background">
@@ -24,7 +25,7 @@ const Vacancy = () => {
           }}
         />
         <Divider mb={10} />
-        <Table data={vacancy.data?.data?.data ?? []} columns={column} />
+        <Table data={data} columns={column} />
       </VStack>
     </Layout>
   );

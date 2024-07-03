@@ -40,7 +40,7 @@ export const VacancyFormValidation = yup.object().shape({
   }),
 
   job_to_time: yup.string().when('job_type', {
-    is: '1',
+    is: '2',
     then: (schema) =>
       schema.required('Job to time is required for part-time jobs'),
     otherwise: (schema) => schema.notRequired(), // Optional if not part-time

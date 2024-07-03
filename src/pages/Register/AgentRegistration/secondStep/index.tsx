@@ -1,6 +1,6 @@
 import { Box, Button } from '@chakra-ui/react';
 import { FormWrapper } from 'components/form/FormWrapper';
-import { IStudentSecondStep } from './interface';
+import { IAgentSecondStep } from './interface';
 import { DefaultValues, FormValidation } from './constant';
 import Form from './form';
 import { useRegisterAgentStepSecond } from 'service/service-agent-register';
@@ -8,7 +8,7 @@ import { useRegisterAgentStepSecond } from 'service/service-agent-register';
 const SecondStep = () => {
   const register = useRegisterAgentStepSecond();
 
-  const handleSubmit = async (data: IStudentSecondStep) => {
+  const handleSubmit = async (data: IAgentSecondStep) => {
     const formData = new FormData();
     formData.append('profile_picture', data?.profile_picture[0]);
     await register.mutateAsync(formData);
@@ -16,7 +16,7 @@ const SecondStep = () => {
 
   return (
     <Box>
-      <FormWrapper<IStudentSecondStep>
+      <FormWrapper<IAgentSecondStep>
         defaultValues={DefaultValues}
         onSubmit={handleSubmit}
         validationSchema={FormValidation}

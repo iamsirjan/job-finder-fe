@@ -21,7 +21,7 @@ const AddVacancy = () => {
   const updateVacancy = useUpdateVacancyData();
   const handleSubmit = async (data: IvacancyRequest) => {
     const vacancyData = {
-      organization: '1',
+      organization: '2',
       ...data,
       from_date: new Date(data.from_date).toISOString().split('T')[0],
       to_date: new Date(data.to_date).toISOString().split('T')[0],

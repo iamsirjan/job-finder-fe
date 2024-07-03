@@ -1,7 +1,7 @@
-import { Link as RouterLink } from "react-router-dom";
-import { ListItem, Link, Text, Icon } from "@chakra-ui/react";
-import { Dispatch, ReactNode, SetStateAction } from "react";
-import { RightArrowIcon } from "../../assets";
+import { Link as RouterLink } from 'react-router-dom';
+import { ListItem, Link, Text, Icon } from '@chakra-ui/react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { RightArrowIcon } from '../../assets';
 
 const Item = ({
   name,
@@ -41,17 +41,17 @@ const Item = ({
       <Link
         as={RouterLink}
         to={to}
-        color={"white"}
+        color={'white'}
         // there is a default textDecoration, to remove it ⬇️
         sx={{
-          "&:hover": {
-            textDecoration: "none",
+          '&:hover': {
+            textDecoration: 'none',
           },
         }}
       >
         <ListItem
-          display={"flex"}
-          alignItems={"center"}
+          display={'flex'}
+          alignItems={'center'}
           gap={isCollapsed ? 1 : 2}
           mr={4}
           ml={{
@@ -60,22 +60,22 @@ const Item = ({
           }}
           mb={3}
           p={2}
-          borderRadius={"md"}
+          borderRadius={'md'}
           bgColor={
             activeParent || showDropdown
-              ? "primary.400"
+              ? 'brand.blue'
               : active
-              ? "primary.500"
-              : ""
+                ? 'brand.blue'
+                : ''
           }
-          color={activeTab ? "white" : "gray.500"}
+          color={activeTab ? 'white' : 'gray.500'}
           transition="all ease-in-out"
           sx={{
-            "&:hover": {
-              bgColor: "primary.300",
-              color: "white",
-              "svg path": {
-                stroke: name !== "Logout" ? "white" : "",
+            '&:hover': {
+              bgColor: 'primary.300',
+              color: 'white',
+              'svg path': {
+                stroke: name !== 'Logout' ? 'white' : '',
               },
             },
           }}
@@ -86,13 +86,13 @@ const Item = ({
           <ComponentIcon strokeWidth={0} />
           {!isCollapsed && <Text whiteSpace="nowrap">{name}</Text>}
 
-          {(!!children || to === "") && (
+          {(!!children || to === '') && (
             <Icon
               as={RightArrowIcon}
-              transform={showDropdown ? "rotate(90deg)" : ""}
+              transform={showDropdown ? 'rotate(90deg)' : ''}
               sx={{
                 path: {
-                  stroke: activeTab ? "white" : "",
+                  stroke: activeTab ? 'white' : '',
                 },
               }}
             />

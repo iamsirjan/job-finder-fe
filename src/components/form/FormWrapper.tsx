@@ -1,24 +1,29 @@
 import { Box } from '@chakra-ui/layout';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormEventHandler, ReactNode } from 'react';
-import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
-import { AnySchema, ObjectSchema } from 'yup';
+import {
+  FormProvider,
+  useForm,
+  UseFormProps,
+  FieldValues,
+} from 'react-hook-form';
+import { AnyObject, ObjectSchema } from 'yup';
 
-type Props<T> = UseFormProps<T> & {
+type Props<T extends FieldValues> = UseFormProps<T> & {
   onSubmit: (values: T) => void;
   children: ReactNode;
-  validationSchema: ObjectSchema<Record<keyof T, AnySchema>>;
+  validationSchema: ObjectSchema<any, AnyObject, any, any>;
 };
 
-export const FormWrapper = <T,>({
+export const FormWrapper = <T extends FieldValues>({
   onSubmit,
   children,
   validationSchema,
   defaultValues,
 }: Props<T>) => {
-  const formMethods = useForm({
+  const formMethods = useForm<T>({
     defaultValues: defaultValues,
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any,
   });
 
   const { handleSubmit } = formMethods;
