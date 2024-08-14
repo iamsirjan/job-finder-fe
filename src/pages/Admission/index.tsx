@@ -18,6 +18,7 @@ const Admission = () => {
       <Flex gap={2} flexWrap={'wrap'}>
         {vacancy.data?.map((data) => (
           <AdmissionCard
+            key={data.id}
             address={data.organization.organization_detail.address}
             img={data.organization.organization_detail.profile_pic}
             id={data.id}

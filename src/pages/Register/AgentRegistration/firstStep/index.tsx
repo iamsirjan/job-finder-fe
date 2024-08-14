@@ -3,6 +3,7 @@ import { FormWrapper } from 'components/form/FormWrapper';
 import { DefaultValues, FormValidation } from './constant';
 import Form from './form';
 import { useRegisterAgentStepFirst } from 'service/service-agent-register';
+import { IFirstStepAgent } from './type';
 
 const FirstStep = () => {
   const registration = useRegisterAgentStepFirst();

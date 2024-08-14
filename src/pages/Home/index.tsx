@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { Flex, Text, useDisclosure, Textarea } from '@chakra-ui/react';
+import {
+  Flex,
+  Text,
+  useDisclosure,
+  Textarea,
+  Button,
+  Box,
+  IconButton,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+} from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import CardComponent from 'components/card';
 import Wrapper from '../../wrapper';
@@ -11,19 +22,45 @@ import { useGetTeacherDetails } from 'service/service-teacher-register';
 import ModalComponent from 'components/modal';
 import FormField from 'components/form/FormField';
 import FormFooterButton from 'components/form/FormButton';
+import { useGetUserDetails } from 'service/service-user';
+import { useGetMatchingVacancyList } from 'service/service-matching-vacancy';
+import FilterJob from './filter';
+import { useJobFilter } from './state';
 
 interface IFormInput {
   coverLetter: string;
 }
 
 const Home = () => {
-  const vacancy = useGetVacancyList();
+  const {
+    isOpen: isOpenFilter,
+    onOpen: onOpenDrawer,
+    onClose: onCloseDrawer,
+  } = useDisclosure();
+
   const teacher = useGetTeacherDetails();
+  const [allJobs, setAllJobs] = useState(true);
+  const [matchingJobs, setMatchingJobs] = useState(false);
   const applyVacancy = useApplyVacancy();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vacancyId, setVacancyID] = useState('');
+  const user = useGetUserDetails();
+  const { jobFilter, removeJobFilter } = useJobFilter();
+  const allVacancy = useGetVacancyList({
+    grade:
+      jobFilter
+        .filter((data) => data.key === 'grade')
+        .map((data) => data.value) ?? [],
+    subject:
+      jobFilter
+        .filter((data) => data.key === 'subject')
+        .map((data) => data.value) ?? [],
+  });
+  const matchingVacancy = useGetMatchingVacancyList();
+  const vacancy = allJobs
+    ? (allVacancy?.data as any)
+    : (matchingVacancy?.data?.data as any);
 
-  // Initialize React Hook Form
   const {
     register,
     handleSubmit,
@@ -51,21 +88,65 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <Flex gap={2} flexWrap={'wrap'}>
-        {vacancy?.data &&
-          vacancy.data.map((data) => (
-            <CardComponent
-              address={data.organization.organization_detail.address}
-              img={data.organization.organization_detail.profile_pic}
-              classes={data.grade}
-              id={data.id}
-              subject={data.subject}
-              name={data.organization.organization_detail.name}
-              handleSendRequest={handleRequest}
+      <Box>
+        <Flex justifyContent={'flex-end'} gap={2} alignItems={'center'}>
+          {user.data?.is_teacher && (
+            <>
+              <Button
+                variant={allJobs ? 'primary' : 'outline'}
+                onClick={() => {
+                  setAllJobs(!allJobs);
+                  setMatchingJobs(false);
+                }}
+              >
+                Show All Jobs
+              </Button>
+              <Button
+                variant={matchingJobs ? 'primary' : 'outline'}
+                onClick={() => {
+                  setMatchingJobs(!matchingJobs);
+                  setAllJobs(false);
+                }}
+              >
+                Show Matching Jobs
+              </Button>
+            </>
+          )}
+        </Flex>
+      </Box>
+      <Flex gap={3} my={4}>
+        {jobFilter.map((data, i) => (
+          <Tag key={i} size="lg" colorScheme="red" borderRadius="full">
+            <TagLabel fontWeight={600}>{data.key}: &nbsp; </TagLabel>
+            <TagLabel>{data.label}</TagLabel>
+            <TagCloseButton
+              onClick={() => removeJobFilter(data.value, data.key)}
             />
-          ))}
+          </Tag>
+        ))}
       </Flex>
 
+      <Flex gap={3} flexWrap={'wrap'}>
+        {vacancy &&
+          vacancy?.map((data: any) => {
+            return (
+              <CardComponent
+                key={data.id}
+                address={data.organization.organization_detail.address}
+                img={data.organization.organization_detail.profile_pic}
+                classes={data.grade}
+                id={data.id}
+                subject={data.subject}
+                salary={data.salary_per_period}
+                job_from_time={data.job_from_time}
+                job_to_time={data.job_to_time}
+                jobType={data.job_type}
+                name={data.organization.organization_detail.name}
+                handleSendRequest={handleRequest}
+              />
+            );
+          })}
+      </Flex>
       <ModalComponent
         heading={<Text>Send Cover Letter</Text>}
         onClose={onClose}
@@ -93,6 +174,7 @@ const Home = () => {
           </Flex>
         </form>
       </ModalComponent>
+      <FilterJob isOpen={isOpenFilter} onClose={onCloseDrawer} />
     </Wrapper>
   );
 };

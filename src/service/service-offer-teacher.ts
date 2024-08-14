@@ -1,7 +1,9 @@
 import { useQuery } from 'react-query';
 import { ApiResponse, api } from './service-api';
 import { HttpClient } from './service-axios';
-import { Vacancy } from './service-offer-org';
+import { IVacancyResponse } from 'pages/Admin/Vacancy/interface';
+import { ITeacherDetail } from './service-teacher-register';
+import { AvailableTypeEnum } from 'pages/Register/TeacherRegistration/firstStep/constant';
 
 interface OrganizationDetail {
   id: number;
@@ -41,22 +43,68 @@ export interface OrganizationFullDetail {
   organization_courses: OrganizationCourse[];
 }
 
+export interface Vacancy {
+  name: string;
+  id: string;
+  qualification: string;
+  grade: string[];
+  subject: string[];
+  no_of_applicants: number;
+  from_date: Date;
+  to_date: Date;
+  experience_in_years: number;
+  allow_fresher: boolean;
+  job_type: AvailableTypeEnum;
+  lodging: boolean;
+  fooding: boolean;
+  salary: number;
+  salary_per_period: number;
+  job_from_time: string;
+  job_to_time: string;
+  is_active: boolean;
+  organization: {
+    organization_courses: {
+      id: string;
+      name: string;
+      price: string;
+      duration: string;
+      organization: string;
+      grade: string;
+    }[];
+
+    organization_detail: {
+      address: string;
+      id: string;
+      name: string;
+      pan_number: string;
+      phone_number: string;
+      profile_pic: string;
+      web_site_link: string;
+    };
+  };
+  vacancy_application: {
+    id: string;
+    teacher: string;
+    cv: string;
+    status: string;
+    vacancy: string;
+  }[];
+}
+
 export interface GetOffered {
   data: {
     id: string;
     is_offered: boolean;
     organization: OrganizationFullDetail;
-    teacher: string;
-    vacancy: {
-      id: string;
-      organization: OrganizationFullDetail;
-    };
+    teacher: ITeacherDetail;
+    vacancy: Vacancy;
   }[];
 }
 // Main interface for the JSON data
 export interface VacancyDetail {
   data: {
     id: string;
+    name: string;
     qualification: number;
     grade: number[];
     subject: number[];
@@ -74,8 +122,17 @@ export interface VacancyDetail {
     is_active: boolean;
     organization: OrganizationFullDetail;
     grade_names: string[];
+    vacancy: IVacancyResponse;
+    teacher: ITeacherDetail;
     subject_names: string[];
     qualification_name: string;
+    vacancy_application: {
+      id: string;
+      teacher: string;
+      cv: string;
+      status: string;
+      vacancy: string;
+    }[];
   }[];
 }
 

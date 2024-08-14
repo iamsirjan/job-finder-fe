@@ -12,7 +12,9 @@ const SecondStep = () => {
     const formData = new FormData();
     console.log(data.profile_picture);
     formData.append('profile_picture', data?.profile_picture[0]);
-    await register.mutateAsync(formData);
+    await register.mutateAsync({
+      body: formData,
+    });
   };
 
   return (

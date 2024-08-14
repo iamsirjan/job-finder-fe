@@ -1,5 +1,6 @@
 import { Flex, Input, Select, VStack } from '@chakra-ui/react';
 import FormField from 'components/form/FormField';
+import { IFirstStepStudent } from 'pages/Register/StudentRegistration/firstStep/type';
 import { GENDER } from 'pages/Register/TeacherRegistration/firstStep/constant';
 import { useFormContext } from 'react-hook-form';
 
@@ -24,7 +25,9 @@ const Form = () => {
       <FormField label="Gender" error={errors.gender?.message}>
         <Select {...register('gender')} placeholder="Select option">
           {GENDER?.map((data) => (
-            <option value={data.value}>{data.label}</option>
+            <option key={data.value} value={data.value}>
+              {data.label}
+            </option>
           ))}
         </Select>
       </FormField>

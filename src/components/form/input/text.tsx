@@ -12,6 +12,7 @@ const Text = <T extends FieldValues>({
   leftIcon,
   rightIcon,
   field,
+  placeholder,
 }: ICustomInput<T>) => {
   return (
     <InputGroup>
@@ -20,7 +21,7 @@ const Text = <T extends FieldValues>({
           <Icon as={leftIcon} />
         </InputLeftElement>
       )}
-      <ChakraInput {...field} />
+      <ChakraInput placeholder={placeholder} {...field} />
       {rightIcon && (
         <InputRightElement>
           <Icon as={rightIcon} />

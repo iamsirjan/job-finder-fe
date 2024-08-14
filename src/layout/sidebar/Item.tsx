@@ -35,7 +35,6 @@ const Item = ({
   // 2. showDropdown: it is the child which is clicked when the parent navItem is in onOpen state
   // 3. activeParent: it is the parent of the navItem with active children
   const activeTab = active || showDropdown || activeParent;
-
   return (
     <>
       <Link
@@ -62,17 +61,13 @@ const Item = ({
           p={2}
           borderRadius={'md'}
           bgColor={
-            activeParent || showDropdown
-              ? 'brand.blue'
-              : active
-                ? 'brand.blue'
-                : ''
+            activeParent || showDropdown ? '#2596be' : active ? '#2596be' : ''
           }
           color={activeTab ? 'white' : 'gray.500'}
           transition="all ease-in-out"
           sx={{
             '&:hover': {
-              bgColor: 'primary.300',
+              bgColor: '#2596be',
               color: 'white',
               'svg path': {
                 stroke: name !== 'Logout' ? 'white' : '',

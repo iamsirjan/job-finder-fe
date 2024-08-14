@@ -1,15 +1,16 @@
+import { Box, Button, Flex, Text, Divider, Avatar } from '@chakra-ui/react';
 import {
-  Box,
-  Button,
-  Flex,
-  Text,
-  VStack,
-  HStack,
-  Divider,
-  Avatar,
-} from '@chakra-ui/react';
+  GradeIcon,
+  LocationIcon,
+  SalaryIcon,
+  SubjectIcon,
+  TimeIcon,
+} from 'assets';
 import LabelBox from 'components/labelBox';
-import { FaStar, FaCheckCircle } from 'react-icons/fa';
+import { AvailableTypeEnum } from 'pages/Register/TeacherRegistration/firstStep/constant';
+import { FaStar } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { NAVIGATION_ROUTES } from 'route/routes.constant';
 import { useGetUserDetails } from 'service/service-user';
 
 interface ICard {
@@ -20,6 +21,11 @@ interface ICard {
   subject: string[];
   classes: string[];
   handleSendRequest: (id: string) => void;
+  salary: number;
+  job_from_time: string;
+  job_to_time: string;
+  jobType: AvailableTypeEnum;
+  showApply?: boolean;
 }
 
 const StaffCard = ({
@@ -27,9 +33,14 @@ const StaffCard = ({
   name,
   address,
   subject,
-  classes,
   handleSendRequest,
   id,
+  salary,
+  job_from_time,
+  job_to_time,
+  jobType,
+  classes,
+  showApply,
 }: ICard) => {
   const imageURL = import.meta.env.VITE_APP_IMAGE_API;
   const user = useGetUserDetails();
@@ -40,79 +51,92 @@ const StaffCard = ({
       border="1px solid #e2e8f0"
       borderRadius="8px"
       boxShadow="0 4px 12px rgba(0, 0, 0, 0.1)"
-      maxW="650px"
+      width={'350px'}
     >
       <Flex direction="column" gap={4}>
-        {/* Top Section */}
-        <HStack spacing={4} alignItems="flex-start">
+        <Flex gap={4} alignItems="flex-start">
           <Avatar
             size="lg"
             name={name}
             src={imageURL + img}
-            borderRadius="full"
+            borderRadius="10%"
           />
-          <Flex direction="column" flex="1" gap={1}>
+          <Flex flexDirection={'column'} w={'100%'}>
             <Text
               fontWeight="700"
               fontSize="18px"
-              color="#09305A"
               display={'flex'}
+              color={'brand.mainBlue'}
               alignItems={'center'}
             >
               {name}{' '}
-              <FaCheckCircle color="green" style={{ marginLeft: '8px' }} />
             </Text>
-            <Text fontSize="14px" color="gray.500">
-              {address}
-            </Text>
-            <Flex mt={2} align="center">
-              {[...Array(5)].map((_, i) => (
-                <FaStar
-                  color="#FFD700"
-                  key={i}
-                  style={{ marginRight: '2px' }}
-                />
-              ))}
+            <Flex
+              gap={1}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            >
+              <Text display={'flex'} gap={2} fontSize="14px" color="gray.500">
+                <LocationIcon /> {address}
+              </Text>
+              <Flex align="center" gap="2px">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar color="#FFD700" key={i} fontSize={'14px'} />
+                ))}
+              </Flex>
             </Flex>
-
-            {/* Action Buttons */}
           </Flex>
-          <VStack>
-            {user.data?.is_organization && (
+
+          {/* Action Buttons */}
+        </Flex>
+        {/* Divider */}
+        <Divider />
+
+        <Flex gap={4} alignItems={'center'}>
+          <SubjectIcon />
+          <LabelBox color={'#31883A'} items={subject} bgColor={'#DEFFCA'} />
+        </Flex>
+        <Flex gap={4} alignItems={'center'}>
+          <GradeIcon />
+          <LabelBox color={'#EFB92D'} items={classes} bgColor={'#FFF0CA'} />
+        </Flex>
+        <Flex gap={4} alignItems={'center'}>
+          <SalaryIcon />
+          <Text fontSize={'14px'}>{salary} Per Period</Text>
+        </Flex>
+        <Flex gap={4} alignItems={'center'}>
+          <TimeIcon />
+          <Text fontSize={'14px'}>
+            {jobType === AvailableTypeEnum.PARTTIME
+              ? `${job_from_time} - ${job_to_time}`
+              : '10AM - 5PM'}
+          </Text>
+        </Flex>
+
+        <Flex mt={2} gap={4}>
+          {user.data?.is_organization ||
+            (showApply && (
               <Button
-                variant="outline"
-                size="sm"
-                w="140px"
-                colorScheme="teal"
+                size="md"
+                borderRadius={'25px'}
+                w={'140px'}
+                background={'brand.mainBlue'}
                 onClick={() => handleSendRequest(id)}
               >
                 Send Request
               </Button>
-            )}
-            <Button variant="outline" size="sm" w="140px" colorScheme="teal">
+            ))}
+          <Link to={NAVIGATION_ROUTES.TEACHERDETAILS.replace(':id', id)}>
+            <Button
+              size="md"
+              borderRadius={'25px'}
+              w={'140px'}
+              background={'brand.mainBlue'}
+            >
               View Details
             </Button>
-          </VStack>
-        </HStack>
-
-        {/* Divider */}
-        <Divider />
-
-        {/* Bottom Section */}
-        <Box>
-          <Text fontWeight="600" fontSize="15px" color="#09305A" mb={2}>
-            Subjects:
-          </Text>
-          <LabelBox items={subject} bgColor={'#FF6B6B'} />
-        </Box>
-        <Box>
-          <Text fontWeight="600" fontSize="15px" color="#09305A" mb={2}>
-            Classes:
-          </Text>
-          <Text fontSize="14px" color="gray.600">
-            <LabelBox items={classes} bgColor={'#4CAF50'} />
-          </Text>
-        </Box>
+          </Link>
+        </Flex>
       </Flex>
     </Box>
   );

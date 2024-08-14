@@ -18,6 +18,7 @@ const primary = defineStyle({
       backgroundColor: `${THEME_COLORS.primary[500]} `,
     },
   },
+  borderColor: 'primary.1000',
 });
 
 const danger = defineStyle({

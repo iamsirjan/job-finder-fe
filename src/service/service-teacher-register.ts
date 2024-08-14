@@ -8,6 +8,7 @@ import { useRegistrationStore } from 'state/registration.state';
 import { ISecondStep } from 'pages/Register/TeacherRegistration/secondStep/interface';
 import { IThirdStep } from 'pages/Register/TeacherRegistration/thirdStep/interface';
 import { IFirstStep } from 'pages/Register/TeacherRegistration/firstStep/interface';
+import { AvailableTypeEnum } from 'pages/Register/TeacherRegistration/firstStep/constant';
 
 interface IDocument {
   id: number;
@@ -40,6 +41,8 @@ interface IUserProfile {
 
 interface ITeacher {
   id: string;
+  is_admin_created: boolean;
+  biography: string;
   created_at: string;
   updated_at: string;
   experience_in_years: number;
@@ -48,25 +51,33 @@ interface ITeacher {
   interested_organization: string;
   lodging: boolean;
   fooding: boolean;
-  is_available_for_tuition: boolean;
-  available_time: string;
+  is_available_for_tution: boolean;
+  expected_salary_low: string;
+  expected_salary_high: string;
+  available_time: AvailableTypeEnum;
   no_of_periods: number;
   salary_per_period: number;
   period_from_time: string;
   period_to_time: string;
   can_work_in_village: boolean;
   can_work_in_city: boolean;
-  user: number;
+  user?: string;
   organization: string | null;
   degree: number;
   province: number;
   district: number;
   municipality: number;
-  subject: string[];
-  grade: string[];
+  subject: {
+    id: string;
+    name: string;
+  }[];
+  grade: {
+    id: string;
+    name: string;
+  }[];
 }
 
-interface ITeacherDetail {
+export interface ITeacherDetail {
   teacher: ITeacher;
   user_profile: IUserProfile;
   document: IDocument[];
@@ -74,11 +85,28 @@ interface ITeacherDetail {
   citizenship: IDocument[];
 }
 
-const registerTeacherStepFirst = async (body: IFirstStep) => {
-  const response = await HttpClient.post<ApiResponse<IFirstStep>>(
-    api.teacher.registerStepFirst,
-    body,
-  );
+export interface IAllTeacherDetail {
+  data: {
+    teacher: ITeacher;
+    user_profile: IUserProfile;
+    document: IDocument[];
+    cv: IDocument[];
+    citizenship: IDocument[];
+  }[];
+}
+
+const registerTeacherStepFirst = async ({
+  id,
+  body,
+}: {
+  id?: string;
+  body: IFirstStep;
+}) => {
+  const url = id
+    ? `${api.teacher.registerStepFirst}?user=${id}`
+    : api.teacher.registerStepFirst;
+
+  const response = await HttpClient.post<ApiResponse<IFirstStep>>(url, body);
   return response;
 };
 
@@ -99,11 +127,17 @@ export const useRegisterTeacherStepFirst = () => {
   });
 };
 
-const registerTeacherStepSecond = async (body: FormData) => {
-  const response = await HttpClient.patch<ApiResponse<ISecondStep>>(
-    api.teacher.registerStepSecond,
-    body,
-  );
+const registerTeacherStepSecond = async ({
+  id,
+  body,
+}: {
+  id?: string;
+  body: FormData;
+}) => {
+  const url = id
+    ? `${api.teacher.registerStepSecond}?user=${id}`
+    : api.teacher.registerStepSecond;
+  const response = await HttpClient.patch<ApiResponse<ISecondStep>>(url, body);
   return response;
 };
 
@@ -125,11 +159,15 @@ export const useRegisterTeacherStepSecond = () => {
   });
 };
 
-const registerTeacherStepThird = async (body: FormData) => {
-  const response = await HttpClient.patch<ApiResponse<IThirdStep>>(
-    api.uploadProfile,
-    body,
-  );
+const registerTeacherStepThird = async ({
+  id,
+  body,
+}: {
+  id?: string;
+  body: FormData;
+}) => {
+  const url = id ? `${api.uploadProfile}?user=${id}` : api.uploadProfile;
+  const response = await HttpClient.patch<ApiResponse<IThirdStep>>(url, body);
   return response;
 };
 
@@ -164,15 +202,94 @@ export const useGetTeacherDetails = () => {
   });
 };
 
-const getAllTeacherDetails = async () => {
-  const response = await HttpClient.get<ApiResponse<ITeacherDetail[]>>(
+const getAllTeacherDetails = async ({
+  grade,
+  subject,
+}: {
+  grade?: string[];
+  subject?: string[];
+}) => {
+  const data = await HttpClient.get<ApiResponse<ITeacherDetail[]>>(
     api.teacher.getAllTeacherDetails,
+    {
+      params: { grade, subject },
+    },
   );
-  return response;
+  return data;
 };
 
-export const useGetAllTeacherDetails = () => {
-  return useQuery('teacherall', () => getAllTeacherDetails(), {
-    keepPreviousData: true,
-  });
+export const useGetAllTeacherDetails = ({
+  grade,
+  subject,
+}: {
+  grade?: string[];
+  subject?: string[];
+} = {}) => {
+  return useQuery(
+    ['teacherall', grade, subject],
+    () =>
+      getAllTeacherDetails({
+        grade: grade,
+        subject: subject,
+      }),
+    {
+      keepPreviousData: true,
+    },
+  );
+};
+
+const getTeacherDetailsByID = async ({ id }: { id: string }) => {
+  const response = await HttpClient.get<ApiResponse<ITeacherDetail>>(
+    `${api.teacher.teacherDetails}${id}/`,
+  );
+  return response.data.data;
+};
+
+export const useGetTeacherDetailsByID = ({ id }: { id: string }) => {
+  return useQuery(
+    ['teacher', id],
+    () =>
+      getTeacherDetailsByID({
+        id: id,
+      }),
+    {
+      keepPreviousData: true,
+    },
+  );
+};
+
+const getAllTeacherList = async ({
+  grade,
+  subject,
+}: {
+  grade?: string[];
+  subject?: string[];
+}) => {
+  const { data } = await HttpClient.get<IAllTeacherDetail>(
+    api.teacher.getAllTeacherDetails,
+    {
+      params: { grade, subject },
+    },
+  );
+  return data.data;
+};
+
+export const useGetAllTeacherList = ({
+  grade,
+  subject,
+}: {
+  grade?: string[];
+  subject?: string[];
+} = {}) => {
+  return useQuery(
+    ['teacherlist', grade, subject],
+    () =>
+      getAllTeacherList({
+        grade: grade,
+        subject: subject,
+      }),
+    {
+      keepPreviousData: true,
+    },
+  );
 };

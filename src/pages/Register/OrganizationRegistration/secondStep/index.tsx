@@ -8,7 +8,9 @@ import { useRegisterOrganizationStepSecond } from 'service/service-organization-
 const SecondStep = () => {
   const registration = useRegisterOrganizationStepSecond();
   const handleSubmit = async (data: IOrgSecondStep) => {
-    await registration.mutateAsync(data);
+    await registration.mutateAsync({
+      body: data,
+    });
   };
   return (
     <Box>

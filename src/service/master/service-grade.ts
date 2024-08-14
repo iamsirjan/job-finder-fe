@@ -133,7 +133,7 @@ const getAllGradeList = async () => {
 };
 
 export const useGetAllGradeList = () => {
-  return useQuery([gradeFetchQuery], () => getAllGradeList(), {
-    keepPreviousData: true,
+  return useQuery([gradeFetchQuery, 'gl'], () => getAllGradeList(), {
+    refetchOnWindowFocus: true,
   });
 };

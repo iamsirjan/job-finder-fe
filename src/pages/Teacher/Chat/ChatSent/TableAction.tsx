@@ -1,8 +1,12 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { FormButton } from 'components/button/FormButton';
-import { HStack, Text } from '@chakra-ui/react';
+import { Badge, Box, HStack, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { VacancyDetail } from 'service/service-offer-teacher';
+import { NAVIGATION_ROUTES } from 'route/routes.constant';
+import { Link } from 'react-router-dom';
+import { FaCheck } from 'react-icons/fa';
+import { RxCross1 } from 'react-icons/rx';
 
 type SentData = VacancyDetail['data'][number];
 
@@ -52,14 +56,20 @@ export const useSentChatColumnn = () => {
       },
       {
         header: 'Vacancy',
-        cell: ({ row }) => <Text>{row.original.id}</Text>,
-      },
-      {
-        header: 'Organization',
         cell: ({ row }) => (
-          <Text>{row.original.organization.organization_detail.name}</Text>
+          <Link
+            to={NAVIGATION_ROUTES.VACANCY.DETAILS.replace(
+              ':id',
+              row.original.id,
+            )}
+          >
+            <Text cursor="pointer" color="brand.blueActive">
+              {row.original.name}
+            </Text>
+          </Link>
         ),
       },
+
       {
         header: 'Address',
         cell: ({ row }) => (
@@ -67,9 +77,81 @@ export const useSentChatColumnn = () => {
         ),
       },
       {
-        header: 'accepted',
+        header: 'Salary',
         cell: ({ row }) => (
-          <Text>{row.original.is_active ? 'Accepted' : 'Not Accepted'}</Text>
+          <Text>
+            <Badge colorScheme="purple">
+              Rs. {row.original.salary_per_period}
+            </Badge>
+          </Text>
+        ),
+      },
+      {
+        header: 'Experience',
+        cell: ({ row }) => (
+          <Badge color="green">{row.original.experience_in_years} years</Badge>
+        ),
+      },
+
+      {
+        header: 'Lodging',
+        cell: ({ row }) => (
+          <Box>
+            {row.original.lodging ? (
+              <FaCheck color="green" fontSize={'30px'} />
+            ) : (
+              <RxCross1 color="red" fontSize={'30px'} />
+            )}
+          </Box>
+        ),
+      },
+      {
+        header: 'Fooding',
+        cell: ({ row }) => (
+          <Box>
+            {row.original.fooding ? (
+              <FaCheck color="green" fontSize={'30px'} />
+            ) : (
+              <RxCross1 color="red" fontSize={'30px'} />
+            )}
+          </Box>
+        ),
+      },
+      {
+        header: 'Application  Status',
+        cell: ({ row }) => (
+          <Text>
+            {row.original.vacancy_application[0].status === '2' ? (
+              <Badge variant="solid">Pending</Badge>
+            ) : row.original.vacancy_application[0].status === '3' ? (
+              <Badge variant="solid" colorScheme="red">
+                REJECTED
+              </Badge>
+            ) : row.original.vacancy_application[0].status === '1' ? (
+              <Badge variant="solid" colorScheme="purple">
+                Scheduled FOR INTERVIEW
+              </Badge>
+            ) : (
+              <Badge variant="solid" colorScheme="green">
+                HIRED
+              </Badge>
+            )}
+          </Text>
+        ),
+      },
+      {
+        header: 'Check Application',
+        cell: ({ row }) => (
+          <Link
+            to={NAVIGATION_ROUTES.APPLICANTDETAILS.replace(
+              ':id',
+              row.original.vacancy_application[0].id,
+            )}
+          >
+            <Text cursor="pointer" color="brand.blueActive">
+              Application Details
+            </Text>
+          </Link>
         ),
       },
     ],

@@ -28,6 +28,7 @@ const Education = () => {
       <Flex gap={2} flexWrap={'wrap'}>
         {data?.map((data) => (
           <EducationCard
+            key={data.id}
             address={data.hour}
             img={data.img}
             id={data.id}

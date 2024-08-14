@@ -4,7 +4,6 @@ import NavItem from './NavItem';
 import { useNavigationItems } from './navItemList';
 import { webkit_scrollbar } from './style';
 import { NAVIGATION_ROUTES } from '../../route/routes.constant';
-import { useLogoutMutation } from 'service/service-auth';
 
 const Sidebar = ({
   width,
@@ -13,12 +12,8 @@ const Sidebar = ({
   isCollapsed,
   isHovered,
 }: ISidebar) => {
-  const logout = useLogoutMutation();
   const navItems = useNavigationItems();
 
-  const handleLogout = async () => {
-    await logout.mutateAsync();
-  };
   return (
     <Box
       // TODO: didn't know the reason behind this code
@@ -45,6 +40,9 @@ const Sidebar = ({
         <ListItem mx={3} my={6}>
           <Link as={RouterLink} to={NAVIGATION_ROUTES.BASE}>
             {/* PUT your project LOGO here */}
+            <Text color="#000" fontWeight={'800'} textDecor={'none'}>
+              Job Finder
+            </Text>
           </Link>
         </ListItem>
         {navItems.map((item) => (
@@ -54,9 +52,6 @@ const Sidebar = ({
             isCollapsed={isCollapsed && !isHovered}
           />
         ))}
-        <ListItem onClick={handleLogout} mx={3} my={6}>
-          <Text>Logout</Text>
-        </ListItem>
       </List>
     </Box>
   );

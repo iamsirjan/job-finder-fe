@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { extractErrorMessage } from 'utils/errorHandler';
 import { toastFail } from './service-toast';
 import { IStudentSecondStep } from 'pages/Register/StudentRegistration/secondStep/interface';
+import { IFirstStepStudent } from 'pages/Register/StudentRegistration/firstStep/type';
 
 const registerStudentStepFirst = async (body: IFirstStepStudent) => {
   const response = await HttpClient.post<ApiResponse<IFirstStepStudent>>(

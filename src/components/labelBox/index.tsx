@@ -4,30 +4,32 @@ interface LabelBoxProps {
   items: string[];
   bgColor: string;
   limit?: number; // Optional limit with a default value
+  color: string;
 }
 
-const LabelBox = ({ items, bgColor, limit = 3 }: LabelBoxProps) => {
+const LabelBox = ({ items, bgColor, color, limit = 3 }: LabelBoxProps) => {
   const displayedItems = items.slice(0, limit);
   const remainingCount = items.length - limit;
 
   return (
-    <Flex flexWrap="wrap" alignItems="center">
+    <Flex flexWrap="wrap" alignItems="center" gap={1}>
       {displayedItems.map((item, index) => (
-        <Box
+        <Flex
           key={index}
           bg={bgColor}
-          borderRadius="5px"
-          px="8px"
-          py="4px"
-          display="inline-block"
-          color="white"
+          borderRadius="8px"
+          flexWrap={'wrap'}
+          display="flex"
+          alignItems={'center'}
+          justifyContent={'center'}
+          color={color}
           fontSize="13px"
+          w="67px"
+          height="27px"
           fontWeight="bold"
-          mr="4px"
-          mb="4px"
         >
           {item}
-        </Box>
+        </Flex>
       ))}
       {remainingCount > 0 && (
         <Box

@@ -1,4 +1,4 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import { FormWrapper } from 'components/form/FormWrapper';
 import { DefaultValues, FormValidation } from './constant';
 import Form from './form';
@@ -8,26 +8,26 @@ import { useRegisterOrganizationStepFirst } from 'service/service-organization-r
 const FirstStep = () => {
   const registration = useRegisterOrganizationStepFirst();
   const handleSubmit = async (data: IOrgFirstStep) => {
-    await registration.mutateAsync(data);
+    await registration.mutateAsync({
+      body: data,
+    });
   };
   return (
-    <Box>
-      <FormWrapper<IOrgFirstStep>
-        defaultValues={DefaultValues}
-        validationSchema={FormValidation}
-        onSubmit={handleSubmit}
+    <FormWrapper<IOrgFirstStep>
+      defaultValues={DefaultValues}
+      validationSchema={FormValidation}
+      onSubmit={handleSubmit}
+    >
+      <Form />
+      <Button
+        isLoading={registration.isLoading}
+        type="submit"
+        mt={5}
+        width={'100%'}
       >
-        <Form />
-        <Button
-          isLoading={registration.isLoading}
-          type="submit"
-          mt={5}
-          width={'100%'}
-        >
-          Next
-        </Button>
-      </FormWrapper>
-    </Box>
+        Next
+      </Button>
+    </FormWrapper>
   );
 };
 

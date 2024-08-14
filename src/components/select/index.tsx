@@ -23,7 +23,10 @@ function MenuList<
   Group extends GroupBase<Option> = GroupBase<Option>,
 >(props: PropsWithChildren<MenuListProps<Option, IsMulti, Group>>) {
   return (
-    <Box {...props.innerProps} sx={{ ...props.getStyles('menuList', props) }}>
+    <Box
+      {...props.innerProps}
+      sx={{ ...(props.getStyles('menuList', props) as any) }}
+    >
       {props.children}
     </Box>
   );
@@ -36,7 +39,7 @@ function Control<
 >(props: PropsWithChildren<ControlProps<Option, IsMulti, Group>>) {
   return (
     <Box
-      sx={{ ...props.getStyles('control', props) }}
+      sx={{ ...(props.getStyles('control', props) as any) }}
       {...props.innerProps}
       ref={props.innerRef}
     >

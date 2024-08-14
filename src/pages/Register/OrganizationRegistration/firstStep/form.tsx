@@ -41,7 +41,9 @@ const Form = () => {
       >
         <Select {...register('organization_type')} placeholder="Select option">
           {OrganizationTypes?.map((data) => (
-            <option value={data.value}>{data.label}</option>
+            <option key={data.value} value={data.value}>
+              {data.label}
+            </option>
           ))}
         </Select>
       </FormField>

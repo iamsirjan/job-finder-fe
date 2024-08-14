@@ -139,7 +139,8 @@ const getAllSubjectList = async () => {
 };
 
 export const useGetAllSubjectList = () => {
-  return useQuery([subjectFetchQuery], () => getAllSubjectList(), {
+  return useQuery([subjectFetchQuery, 'sl'], () => getAllSubjectList(), {
     keepPreviousData: true,
+    refetchOnMount: true,
   });
 };

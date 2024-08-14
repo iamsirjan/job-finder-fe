@@ -15,6 +15,7 @@ export const LayoutTheme: ComponentStyleConfig = {
       h: 'full',
       borderRadius: 4,
       display: 'flex',
+      w: 'full',
       flexDir: 'column',
     },
   }),

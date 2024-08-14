@@ -16,18 +16,37 @@ export const NAVIGATION_ROUTES = {
     SUBJECT: '/subject',
     UNIVERSITY: '/university',
   },
+  ADMIN: {
+    ORGANIZATION: '/organization',
+    TEACHER: '/teacher',
+    EDITORGANIZATION: '/organization/update/:id',
+    ADDTEACHER: '/teacher/create',
+    EDITTEACHER: '/teacher/update/:id',
+  },
 
   VACANCY: {
     GET: '/vacancy',
     ADD: '/vacancy/add-vacancy',
+    DETAILS: '/vacancy/vacancy-details/:id',
   },
   CHAT: {
-    SENT: '/job-request-sent',
-    RECEIVED: '/job-request-received',
+    SENT: '/chat/job-request-sent',
+    RECEIVED: '/chat/job-request-received',
   },
   CHATTEACHER: {
     SENT: '/job-request-sent-teacher',
     RECEIVED: '/job-request-received-teacher',
   },
-  MATCHINGVACANCY: '/matching-vacancy',
+  TEACHERDETAILS: '/staffs/staff-details/:id',
+  APPLICANTDETAILS: '/applicant/:id',
+  ORGANIZATIONDETAILS: '/organization/:id',
+  MATCHINGTEACHER: '/matching-teacher',
+
+  ORGANIZATION: {
+    EDITORGANIZATION: '/organization/edit/:id',
+  },
+  TEACHER: {
+    EDITTEACHER: '/teacher/edit/:id',
+  },
+  MESSENGER: '/chat',
 };

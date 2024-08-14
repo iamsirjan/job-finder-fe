@@ -3,6 +3,7 @@ import { FormWrapper } from 'components/form/FormWrapper';
 import { DefaultValues, FormValidation } from './constant';
 import Form from './form';
 import { useRegisterStudentStepFirst } from 'service/service-student-register';
+import { IFirstStepStudent } from './type';
 
 const FirstStep = () => {
   const registration = useRegisterStudentStepFirst();

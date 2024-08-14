@@ -13,6 +13,7 @@ type Props<T extends FieldValues> = UseFormProps<T> & {
   onSubmit: (values: T) => void;
   children: ReactNode;
   validationSchema: ObjectSchema<any, AnyObject, any, any>;
+  w?: string;
 };
 
 export const FormWrapper = <T extends FieldValues>({
@@ -20,6 +21,7 @@ export const FormWrapper = <T extends FieldValues>({
   children,
   validationSchema,
   defaultValues,
+  w,
 }: Props<T>) => {
   const formMethods = useForm<T>({
     defaultValues: defaultValues,
@@ -37,7 +39,7 @@ export const FormWrapper = <T extends FieldValues>({
 
   return (
     <FormProvider {...formMethods}>
-      <Box h="full" as="form" onSubmit={onSubmitWrapper}>
+      <Box h="full" as="form" w={w ? w : '100%'} onSubmit={onSubmitWrapper}>
         {children}
       </Box>
     </FormProvider>

@@ -13,6 +13,9 @@ const NavItem = ({ name, to, icon, child, visible, isCollapsed }: INavItem) => {
 
   useEffect(() => {
     setActive((!child && to === location.pathname) || to === `/${match?.[0]}`);
+    if (child?.map((data) => data.to).includes(location.pathname)) {
+      setShowDropdown(true);
+    } else setShowDropdown(false);
   }, [location.pathname]);
 
   return (

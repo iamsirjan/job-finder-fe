@@ -14,38 +14,55 @@ const RegisterForm = () => {
 
   return (
     <VStack gap={4}>
-      <FormField label="Email" error={errors.email?.message}>
-        <Input {...register('email')} name="email" size={'md'} />
+      <FormField error={errors.email?.message}>
+        <Input
+          placeholder="Email"
+          {...register('email')}
+          name="email"
+          size={'md'}
+        />
       </FormField>
-      <FormField label="Phone" error={errors.phone?.message}>
-        <Input {...register('phone')} name="phone" size={'md'} type="number" />
+      <FormField error={errors.phone?.message}>
+        <Input
+          placeholder="Phone"
+          {...register('phone')}
+          name="phone"
+          size={'md'}
+          type="number"
+        />
       </FormField>
-      <FormField label="Address" error={errors.address?.message}>
-        <Input {...register('address')} name="address" size={'md'} />
+      <FormField error={errors.address?.message}>
+        <Input
+          placeholder="Address"
+          {...register('address')}
+          name="address"
+          size={'md'}
+        />
       </FormField>
-      <FormField label="Password" error={errors.password?.message}>
+      <FormField error={errors.password?.message}>
         <Input
           {...register('password')}
           name="password"
           size={'md'}
+          placeholder="Password"
           type="password"
         />
       </FormField>
-      <FormField
-        label="Confirm Password"
-        error={errors.confirm_password?.message}
-      >
+      <FormField error={errors.confirm_password?.message}>
         <Input
           {...register('confirm_password')}
           name="confirm_password"
           size={'md'}
           type="password"
+          placeholder="Confirm Password"
         />
       </FormField>
-      <FormField label="User Type" error={errors.user_type?.message}>
-        <Select {...register('user_type')} placeholder="Select option">
+      <FormField error={errors.user_type?.message}>
+        <Select {...register('user_type')} placeholder="Select User Type">
           {USERTYPE?.map((data) => (
-            <option value={data.value}>{data.label}</option>
+            <option key={data.value} value={data.value}>
+              {data.label}
+            </option>
           ))}
         </Select>
       </FormField>

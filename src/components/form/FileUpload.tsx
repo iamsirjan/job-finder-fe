@@ -39,7 +39,7 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
           {isDragActive ? (
             <p>Drop the files here...</p>
           ) : (
-            <p>Drag 'n' drop some files here, or click to select files</p>
+            <p>Drag drop some files here, or click to select files</p>
           )}
           {field.value && Array.isArray(field.value) && (
             <div style={filesContainerStyle}>

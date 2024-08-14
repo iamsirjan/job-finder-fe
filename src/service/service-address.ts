@@ -20,6 +20,26 @@ export const useGetDistrictList = () => {
   });
 };
 
+const getDistrictListById = async ({ id }: { id: string }) => {
+  const { data } = await HttpClient.get<ApiResponse<IAddressResponse[]>>(
+    `${api.location.district}${id}`,
+  );
+  return data.data;
+};
+
+export const useGetDistrictListById = ({ id }: { id: string }) => {
+  return useQuery(
+    [id],
+    () =>
+      getDistrictListById({
+        id: id,
+      }),
+    {
+      keepPreviousData: true,
+    },
+  );
+};
+
 const getMunicipalityList = async () => {
   const { data } = await HttpClient.get<ApiResponse<IAddressResponse[]>>(
     api.location.municipality,
@@ -31,6 +51,26 @@ export const useGetMunicipalityList = () => {
   return useQuery('municipality', () => getMunicipalityList(), {
     keepPreviousData: true,
   });
+};
+
+const getMunicipalityListById = async ({ id }: { id: string }) => {
+  const { data } = await HttpClient.get<ApiResponse<IAddressResponse[]>>(
+    `${api.location.municipality}${id}`,
+  );
+  return data.data;
+};
+
+export const useGetMunicipalityListById = ({ id }: { id: string }) => {
+  return useQuery(
+    [id],
+    () =>
+      getMunicipalityListById({
+        id: id,
+      }),
+    {
+      keepPreviousData: true,
+    },
+  );
 };
 
 const getProvinceList = async () => {

@@ -1,7 +1,9 @@
-type ICommonState = {
+export type ICommonState = {
   isEditMode: boolean;
+  isDrawerOpen: boolean;
+  orgID: string;
 };
 
-type IRegistrationState = {
+export type IRegistrationState = {
   step: number;
 };

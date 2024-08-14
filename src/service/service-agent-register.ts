@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { extractErrorMessage } from 'utils/errorHandler';
 import { toastFail } from './service-toast';
 import { IAgentSecondStep } from 'pages/Register/AgentRegistration/secondStep/interface';
+import { IFirstStepAgent } from 'pages/Register/AgentRegistration/firstStep/type';
 
 const registerAgentStepFirst = async (body: IFirstStepAgent) => {
   const response = await HttpClient.post<ApiResponse<IFirstStepAgent>>(

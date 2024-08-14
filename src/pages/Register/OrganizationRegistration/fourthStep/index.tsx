@@ -11,7 +11,9 @@ const SecondStep = () => {
   const handleSubmit = async (data: IOrgFourthStep) => {
     const formData = new FormData();
     formData.append('profile_pic', data?.profile_pic[0]);
-    await register.mutateAsync(formData);
+    await register.mutateAsync({
+      body: formData,
+    });
   };
 
   return (

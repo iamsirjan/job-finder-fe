@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
+import { IRegistrationState } from './type';
 
 const initialState: IRegistrationState = {
   step: 1,

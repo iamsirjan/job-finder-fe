@@ -42,7 +42,9 @@ const SecondStep = () => {
       'can_work_in_city',
       data.can_work_in_city ? 'true' : 'false',
     );
-    await register.mutateAsync(formData);
+    await register.mutateAsync({
+      body: formData,
+    });
   };
 
   return (

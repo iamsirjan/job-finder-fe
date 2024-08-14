@@ -18,6 +18,7 @@ const Input = <T extends FieldValues>(props: IInputField<T>) => {
     label,
     type,
     formControlProps,
+    placeholder,
     orientation = 'vertical',
     /** ON using input isRequired, the schema error does not get trigger */
     /** In such scenario this required can be used */
@@ -40,7 +41,7 @@ const Input = <T extends FieldValues>(props: IInputField<T>) => {
             {label} {required && <span style={{ color: 'red' }}>&nbsp;*</span>}
           </FormLabel>
         )}
-        <FieldComponent field={field} {...rest} />
+        <FieldComponent field={field} {...rest} placeholder={placeholder} />
       </Box>
       {error && (
         <Flex justifyContent={'space-between'}>

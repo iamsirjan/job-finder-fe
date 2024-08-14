@@ -6,6 +6,7 @@ const useNavigationItems = () => {
   const userDetails = useGetUserDetails();
   const is_organization = userDetails.data?.is_organization ?? false;
   const is_teacher = userDetails.data?.is_teacher ?? false;
+  console.log(userDetails);
   const is_admin = userDetails.data?.is_superuser ?? false;
 
   const navItems = [
@@ -13,41 +14,9 @@ const useNavigationItems = () => {
       name: 'Dashboard',
       to: NAVIGATION_ROUTES.DASHBOARD,
       icon: DashboardIcon,
-      visible: true,
+      visible: false,
     },
-    {
-      name: 'Vacancy',
-      to: NAVIGATION_ROUTES.VACANCY.GET,
-      icon: DashboardIcon,
-      visible: is_organization,
-    },
-    {
-      name: 'Matching Vacancy',
-      to: NAVIGATION_ROUTES.MATCHINGVACANCY,
-      icon: DashboardIcon,
-      visible: is_teacher,
-    },
-    {
-      name: 'Chat',
-      icon: DashboardIcon,
-      to: NAVIGATION_ROUTES.CHAT.SENT,
-      visible: is_organization,
 
-      child: [
-        {
-          name: 'Sent',
-          to: NAVIGATION_ROUTES.CHAT.SENT,
-          icon: DashboardIcon,
-          visible: true,
-        },
-        {
-          name: 'Received',
-          to: NAVIGATION_ROUTES.CHAT.RECEIVED,
-          icon: DashboardIcon,
-          visible: true,
-        },
-      ],
-    },
     {
       name: 'Chat',
       icon: DashboardIcon,
@@ -63,6 +32,45 @@ const useNavigationItems = () => {
         {
           name: 'Received',
           to: NAVIGATION_ROUTES.CHATTEACHER.RECEIVED,
+          icon: DashboardIcon,
+          visible: true,
+        },
+      ],
+    },
+    {
+      name: 'Organization',
+      icon: DashboardIcon,
+      to: NAVIGATION_ROUTES.ADMIN.ORGANIZATION,
+      visible: is_admin,
+    },
+    {
+      name: 'Vacancy',
+      to: NAVIGATION_ROUTES.VACANCY.GET,
+      icon: DashboardIcon,
+      visible: is_admin || is_organization,
+    },
+    {
+      name: 'Teacher',
+      icon: DashboardIcon,
+      to: NAVIGATION_ROUTES.ADMIN.TEACHER,
+      visible: is_admin,
+    },
+    {
+      name: 'Chat',
+      icon: DashboardIcon,
+      to: NAVIGATION_ROUTES.CHAT.SENT,
+      visible: is_organization || is_admin,
+
+      child: [
+        {
+          name: 'Sent',
+          to: NAVIGATION_ROUTES.CHAT.SENT,
+          icon: DashboardIcon,
+          visible: true,
+        },
+        {
+          name: 'Received',
+          to: NAVIGATION_ROUTES.CHAT.RECEIVED,
           icon: DashboardIcon,
           visible: true,
         },

@@ -25,6 +25,7 @@ export const THEME_COLORS = {
     1400: '#F2F2F2',
   },
   brand: {
+    mainBlue: '#1F3C88',
     accentBlue: '#44C9D1',
     accentPink: '#EE5BC4',
     accentYellow: '#FDCF2D',

@@ -7,7 +7,6 @@ import { Center, Spinner } from '@chakra-ui/react';
 import Home from '../pages/Home';
 import Login from '../pages/login';
 import Layout from 'layout';
-import Dashboard from 'pages/Admin/Dashboard';
 import Degree from 'pages/Admin/MasterData/Degree';
 import Grade from 'pages/Admin/MasterData/Grade';
 import Stream from 'pages/Admin/MasterData/Stream';
@@ -18,8 +17,7 @@ import { useGetUserDetails } from 'service/service-user';
 import OrganizationStep from 'pages/Register/OrganizationRegistration';
 import StudentStep from 'pages/Register/StudentRegistration';
 import AgentStep from 'pages/Register/AgentRegistration';
-import Vacancy from 'pages/Organization/Vacancy';
-import AddVacancy from 'pages/Organization/Vacancy/AddVacancy';
+import Vacancy from 'pages/Vacancy';
 import Staffs from 'pages/Staffs';
 import Admission from 'pages/Admission';
 import Education from 'pages/Education';
@@ -29,9 +27,33 @@ import ChatSent from 'pages/Organization/ChatSent';
 import ChatReceived from 'pages/Organization/ChatReceived';
 import ChatSentTeacher from 'pages/Teacher/Chat/ChatSent';
 import ChatReceivedTeacher from 'pages/Teacher/Chat/ChatReceived';
-import MatchingVacancy from 'pages/Teacher/MatchingVacancy';
+import VacancyDetails from 'pages/VacancyDetails';
+import TeacherDetails from 'pages/TeacherDetails';
+import ApplicantDetails from 'pages/Applicant';
+import Organization from 'pages/Admin/Organization';
+import Teacher from 'pages/Admin/Teacher';
+import TeacherCreate from 'pages/Admin/Teacher/TeacherCreate';
+import EditOrganization from 'pages/Organization/EditOrganization';
+import TeacherEdit from 'pages/Teacher/TeacherEdit';
+import OrganizationDetails from 'pages/OrganizationDetails';
+import VacancyAdmin from 'pages/Admin/Vacancy';
+import AdminChatReceived from 'pages/Admin/JobRequest/ChatReceived';
+import AdminChatSent from 'pages/Admin/JobRequest/ChatSent';
+import ChatSection from 'pages/Chat';
 
-const adminRoutes = [
+const openRoutes = [
+  {
+    Path: NAVIGATION_ROUTES.MESSENGER,
+    element: <ChatSection />,
+  },
+  {
+    path: NAVIGATION_ROUTES.REGISTER,
+    element: <Register />,
+  },
+  {
+    path: NAVIGATION_ROUTES.LOGIN,
+    element: <Login />,
+  },
   {
     path: NAVIGATION_ROUTES.BASE,
     element: <Home />,
@@ -57,10 +79,103 @@ const adminRoutes = [
     element: <LessonList />,
   },
   {
+    path: NAVIGATION_ROUTES.VACANCY.DETAILS,
+    element: <VacancyDetails />,
+  },
+  {
+    path: NAVIGATION_ROUTES.TEACHERDETAILS,
+    element: <TeacherDetails />,
+  },
+  {
+    path: NAVIGATION_ROUTES.ORGANIZATIONDETAILS,
+    element: <OrganizationDetails />,
+  },
+];
+
+const teacherRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <TeacherRegistration />,
+  },
+];
+
+const organizationRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <OrganizationStep />,
+  },
+];
+
+const studentRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <StudentStep />,
+  },
+];
+
+const agentRegistrationRoute = [
+  {
+    path: NAVIGATION_ROUTES.BASE,
+    element: <AgentStep />,
+  },
+];
+
+const teacherRoutes = [
+  ...openRoutes,
+  {
+    Path: NAVIGATION_ROUTES.MESSENGER,
+    element: <ChatSection />,
+  },
+  {
     path: NAVIGATION_ROUTES.DASHBOARD,
     element: (
       <Layout>
-        <Dashboard />
+        <ChatSentTeacher />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.CHATTEACHER.SENT,
+    element: (
+      <Layout>
+        <ChatSentTeacher />
+      </Layout>
+    ),
+  },
+
+  {
+    path: NAVIGATION_ROUTES.CHATTEACHER.RECEIVED,
+    element: (
+      <Layout>
+        <ChatReceivedTeacher />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.VACANCY.DETAILS,
+    element: <VacancyDetails />,
+  },
+  {
+    path: NAVIGATION_ROUTES.TEACHERDETAILS,
+    element: <TeacherDetails />,
+  },
+  {
+    path: NAVIGATION_ROUTES.APPLICANTDETAILS,
+    element: <ApplicantDetails />,
+  },
+];
+
+const organizationRoute = [
+  ...openRoutes,
+  {
+    Path: NAVIGATION_ROUTES.MESSENGER,
+    element: <ChatSection />,
+  },
+  {
+    path: NAVIGATION_ROUTES.DASHBOARD,
+    element: (
+      <Layout>
+        <Vacancy />
       </Layout>
     ),
   },
@@ -73,13 +188,75 @@ const adminRoutes = [
     ),
   },
   {
-    path: NAVIGATION_ROUTES.VACANCY.ADD,
+    path: NAVIGATION_ROUTES.CHAT.SENT,
     element: (
       <Layout>
-        <AddVacancy />
+        <ChatSent />
       </Layout>
     ),
   },
+  {
+    path: NAVIGATION_ROUTES.CHAT.RECEIVED,
+    element: (
+      <Layout>
+        <ChatReceived />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.VACANCY.DETAILS,
+    element: <VacancyDetails />,
+  },
+  {
+    path: NAVIGATION_ROUTES.TEACHERDETAILS,
+    element: <TeacherDetails />,
+  },
+  {
+    path: NAVIGATION_ROUTES.APPLICANTDETAILS,
+    element: <ApplicantDetails />,
+  },
+];
+
+const adminRoutes = [
+  ...openRoutes,
+  {
+    path: NAVIGATION_ROUTES.MESSENGER,
+    element: <ChatSection />,
+  },
+
+  {
+    path: NAVIGATION_ROUTES.DASHBOARD,
+    element: (
+      <Layout>
+        <Organization />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.VACANCY.GET,
+    element: (
+      <Layout>
+        <VacancyAdmin />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.CHAT.RECEIVED,
+    element: (
+      <Layout>
+        <AdminChatReceived />
+      </Layout>
+    ),
+  },
+  {
+    path: NAVIGATION_ROUTES.CHAT.SENT,
+    element: (
+      <Layout>
+        <AdminChatSent />
+      </Layout>
+    ),
+  },
+
   {
     path: NAVIGATION_ROUTES.MASTERDATA.STREAM,
     element: (
@@ -120,108 +297,58 @@ const adminRoutes = [
       </Layout>
     ),
   },
+
   {
-    path: NAVIGATION_ROUTES.CHAT.SENT,
+    path: NAVIGATION_ROUTES.ADMIN.ORGANIZATION,
     element: (
       <Layout>
-        <ChatSent />
+        <Organization />
       </Layout>
     ),
   },
   {
-    path: NAVIGATION_ROUTES.CHAT.RECEIVED,
+    path: NAVIGATION_ROUTES.ADMIN.TEACHER,
     element: (
       <Layout>
-        <ChatReceived />
+        <Teacher />
       </Layout>
     ),
   },
   {
-    path: NAVIGATION_ROUTES.CHATTEACHER.SENT,
+    path: NAVIGATION_ROUTES.ADMIN.ADDTEACHER,
     element: (
       <Layout>
-        <ChatSentTeacher />
+        <TeacherCreate />
       </Layout>
     ),
   },
   {
-    path: NAVIGATION_ROUTES.MATCHINGVACANCY,
+    path: NAVIGATION_ROUTES.ORGANIZATION.EDITORGANIZATION,
     element: (
       <Layout>
-        <MatchingVacancy />
+        <EditOrganization />
       </Layout>
     ),
   },
   {
-    path: NAVIGATION_ROUTES.CHATTEACHER.RECEIVED,
+    path: NAVIGATION_ROUTES.TEACHER.EDITTEACHER,
     element: (
       <Layout>
-        <ChatReceivedTeacher />
+        <TeacherEdit />
       </Layout>
     ),
   },
-];
-
-const openRoutes = [
   {
-    path: NAVIGATION_ROUTES.REGISTER,
-    element: <Register />,
+    path: NAVIGATION_ROUTES.VACANCY.DETAILS,
+    element: <VacancyDetails />,
   },
   {
-    path: NAVIGATION_ROUTES.LOGIN,
-    element: <Login />,
+    path: NAVIGATION_ROUTES.TEACHERDETAILS,
+    element: <TeacherDetails />,
   },
   {
-    path: NAVIGATION_ROUTES.BASE,
-    element: <Home />,
-  },
-  {
-    path: NAVIGATION_ROUTES.STAFFS,
-    element: <Staffs />,
-  },
-  {
-    path: NAVIGATION_ROUTES.ADMISSION,
-    element: <Admission />,
-  },
-  {
-    path: NAVIGATION_ROUTES.EDUCATION,
-    element: <Education />,
-  },
-  {
-    path: NAVIGATION_ROUTES.COURSE,
-    element: <CourseList />,
-  },
-  {
-    path: NAVIGATION_ROUTES.LESSON,
-    element: <LessonList />,
-  },
-];
-
-const teacherRegistrationRoute = [
-  {
-    path: NAVIGATION_ROUTES.BASE,
-    element: <TeacherRegistration />,
-  },
-];
-
-const organizationRegistrationRoute = [
-  {
-    path: NAVIGATION_ROUTES.BASE,
-    element: <OrganizationStep />,
-  },
-];
-
-const studentRegistrationRoute = [
-  {
-    path: NAVIGATION_ROUTES.BASE,
-    element: <StudentStep />,
-  },
-];
-
-const agentRegistrationRoute = [
-  {
-    path: NAVIGATION_ROUTES.BASE,
-    element: <AgentStep />,
+    path: NAVIGATION_ROUTES.APPLICANTDETAILS,
+    element: <ApplicantDetails />,
   },
 ];
 
@@ -233,18 +360,24 @@ const AppRoutes = () => {
   const is_organization = userDetails.data?.is_organization;
   const is_student = userDetails.data?.is_student;
   const is_agent = userDetails.data?.is_agent;
+  const is_admin = userDetails.data?.is_superuser;
 
-  console.log(is_organization && !isRegistered);
   const routes = isAuthenticated
     ? is_teacher && !isRegistered
       ? teacherRegistrationRoute
-      : is_organization && !isRegistered
-        ? organizationRegistrationRoute
-        : is_student && !isRegistered
-          ? studentRegistrationRoute
-          : is_agent && !isRegistered
-            ? agentRegistrationRoute
-            : adminRoutes
+      : is_teacher
+        ? teacherRoutes
+        : is_organization && !isRegistered
+          ? organizationRegistrationRoute
+          : is_organization
+            ? organizationRoute
+            : is_admin
+              ? adminRoutes
+              : is_student && !isRegistered
+                ? studentRegistrationRoute
+                : is_agent && !isRegistered
+                  ? agentRegistrationRoute
+                  : adminRoutes
     : openRoutes;
 
   const element = useRoutes(routes);

@@ -6,22 +6,31 @@ interface FileDropzoneProps {
   name: string;
   field: any; // Pass the 'field' prop to access the current files
   multiple?: boolean;
+  defaultValue?: string; // Default file name from API
 }
 
 const FileDropzone: React.FC<FileDropzoneProps> = ({
   name,
   field,
   multiple = true,
+  defaultValue,
 }) => {
   const { control, setValue } = useFormContext();
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const currentFiles = field.value || []; // Get current files from form field value
-      const updatedFiles = [...currentFiles, ...acceptedFiles]; // Concatenate current files with new files
+      const currentFiles = field.value || [];
+      let updatedFiles;
+
+      if (multiple) {
+        updatedFiles = [...currentFiles, ...acceptedFiles];
+      } else {
+        updatedFiles = [...acceptedFiles];
+      }
+
       setValue(name, updatedFiles, { shouldValidate: true });
     },
-    [setValue, name, field.value],
+    [setValue, name, field.value, multiple],
   );
 
   const removeFile = (fileName: string) => {
@@ -41,29 +50,40 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
-        <div>
-          <div {...getRootProps()} style={dropzoneStyle}>
-            <input
-              {...getInputProps()}
-              onChange={(e) => {
-                const files = (e.target as HTMLInputElement).files;
-                if (files) {
-                  onDrop(Array.from(files));
-                }
-              }}
-            />
-            {isDragActive ? (
-              <p>Drop the files here...</p>
-            ) : (
-              <p>Drag 'n' drop some files here, or click to select files</p>
-            )}
-          </div>
-          {field.value &&
-            Array.isArray(field.value) &&
-            field.value.length > 0 && (
+      render={({ field }) => {
+        const displayFiles = field.value || [];
+        const hasFiles = displayFiles.length > 0;
+
+        return (
+          <div>
+            <div {...getRootProps()} style={dropzoneStyle}>
+              <input
+                {...getInputProps()}
+                onChange={(e) => {
+                  const files = (e.target as HTMLInputElement).files;
+                  if (files) {
+                    onDrop(Array.from(files));
+                  }
+                }}
+              />
+              {isDragActive ? (
+                <p>Drop the files here...</p>
+              ) : (
+                <p>Drag n drop some files here, or click to select files</p>
+              )}
+            </div>
+            {!hasFiles && defaultValue && (
               <div style={filesContainerStyle}>
-                {field.value.map((file: File) => (
+                <div style={fileItemStyle}>
+                  <span style={removeIconStyle}>&#10006;</span>{' '}
+                  {/* Remove Icon */}
+                  <span style={fileNameStyle}>{defaultValue}</span>
+                </div>
+              </div>
+            )}
+            {hasFiles && (
+              <div style={filesContainerStyle}>
+                {displayFiles.map((file: File) => (
                   <div key={file.name} style={fileItemStyle}>
                     <span
                       style={removeIconStyle}
@@ -77,8 +97,9 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
                 ))}
               </div>
             )}
-        </div>
-      )}
+          </div>
+        );
+      }}
     />
   );
 };

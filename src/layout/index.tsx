@@ -3,7 +3,6 @@ import { Box } from '@chakra-ui/react';
 import Sidebar from './sidebar';
 import useWindowSize from '../hooks/useWindowResize';
 import { SidebarState } from '../hooks/useContext';
-import Navbar from './Navbar';
 
 // Define the possible layout widths
 const LAYOUT_WIDTHS = {
@@ -62,7 +61,7 @@ const Layout = ({ children }: ILayout) => {
         isCollapsed={!showSidebar}
       />
       <Box height="100vh" maxH="100vh" overflowY="auto">
-        <Navbar />
+        {/* <Navbar /> */}
         <SidebarState.Provider value={{ showSidebar, setShowSidebar }}>
           <Box sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
             {children}

@@ -20,19 +20,29 @@ export const api = {
     appliedVacancy: 'teacher/get-applied-vacancy/',
     jobOffer: 'teacher/job-offer/',
     getMatchingVacancy: 'teacher/get-matching-vacancy/',
+    applicationDetails: '/teacher/get-vacancy-application/',
   },
   organization: {
     registerOrganizationStepFirst:
       '/organization/register-organization-step-1/',
+    updateOrganizationStepFirst: '/organization/update-organization-step-1/',
     registerOrganizationStepSecond:
       '/organization/register-organization-step-2/',
+    updateOrganizationStepSecond: '/organization/update-organization-step-2/',
     registerOrganizationStepThird:
       '/organization/register-organization-step-3/',
+    updateOrganizationStepThird: '/organization/update-organization-step-3/',
     registerOrganizationStepFourth:
       '/organization/register-organization-step-4/',
     sendOffer: '/organization/job-offer/',
     sentOffer: '/organization/job-offer/',
     receivedOffer: '/organization/get-all-teacher-vacancy-application/',
+
+    details: '/organization/org-self-detail/',
+    vacancy: '/organization/org-vacancy/',
+    organizationList: '/organization/organization-detail/',
+    getMatchingVacancy: 'organization/get-all-matching-teacher/',
+    getMatchingOrg: '/organization/matching/',
   },
   student: {
     registerStudentStepFirst: '/student/student-register-step-1/',
@@ -44,10 +54,20 @@ export const api = {
   },
   location: {
     district: '/common/district/',
-    municipality: '/common/municipality',
+    municipality: '/common/municipality/',
     province: '/common/province',
   },
+  admin: {
+    getReceivedApplication: '/dashboard/get-received-application',
+    getSentApplication: '/dashboard/get-sent-application',
+  },
 
+  vacancyStatus: {
+    status: '/organization/update-vacancy-application/',
+    reject: '/organization/reject-vacancy-application/',
+    accept: '/organization/accept-vacancy-application/',
+    hire: '/organization/hire-vacancy-application/',
+  },
   vacancy: '/organization/vacancy/',
 };
 

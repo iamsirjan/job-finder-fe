@@ -14,6 +14,7 @@ export interface IRegisterUserRequest {
   password: string;
   confirm_password: string;
   user_type: string;
+  id?: string;
 }
 
 export const USERTYPE = [
@@ -43,12 +44,16 @@ const registerUser = async (body: IRegisterUserRequest) => {
   return response;
 };
 
-export const useRegisterUser = () => {
+export const useRegisterUser = ({
+  redirect = true,
+}: {
+  redirect?: boolean;
+}) => {
   const navigate = useNavigate();
   return useMutation(registerUser, {
     onSuccess: () => {
-      toastSuccess('user registered successfully');
-      navigate(NAVIGATION_ROUTES.LOGIN);
+      redirect && toastSuccess('user registered successfully');
+      redirect && navigate(NAVIGATION_ROUTES.LOGIN);
     },
     onError: (error) => {
       const err = error as AxiosError<{ message: string; errors: [] }>;

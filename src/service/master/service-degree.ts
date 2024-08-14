@@ -138,7 +138,8 @@ const getAllDegreeList = async () => {
 };
 
 export const useGetAllDegreeList = () => {
-  return useQuery([degreeFetchQuery], () => getAllDegreeList(), {
+  return useQuery([degreeFetchQuery, 'dl'], () => getAllDegreeList(), {
     keepPreviousData: true,
+    refetchOnMount: true,
   });
 };

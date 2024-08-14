@@ -40,9 +40,9 @@ const OrganizationStep = () => {
   };
   return (
     <Wrapper showNavbar={false}>
-      <Flex justifyContent={'center'} alignItems={'center'} w="100%">
-        <Flex flexDirection={'column'}>
-          <Slider w={'100%'} min={0} max={4} value={step.step}>
+      <Flex justifyContent={'center'} alignItems={'center'}>
+        <Flex flexDirection={'column'} w={'100%'}>
+          <Slider min={0} max={4} value={step.step}>
             <SliderTrack height={'6px'} borderRadius="6px">
               <SliderFilledTrack
                 borderRadius={'6px'}

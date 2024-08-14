@@ -1,10 +1,12 @@
 import { useQuery } from 'react-query';
 import { ApiResponse, api } from './service-api';
 import { HttpClient } from './service-axios';
-import { IVacancyResponse } from 'pages/Organization/Vacancy/interface';
+import { AvailableTypeEnum } from 'pages/Register/TeacherRegistration/firstStep/constant';
+import { ITeacherDetail } from './service-teacher-register';
 
 interface Teacher {
   id: string;
+  biography: string;
   created_at: string;
   updated_at: string;
   experience_in_years: number;
@@ -14,7 +16,7 @@ interface Teacher {
   lodging: boolean;
   fooding: boolean;
   is_available_for_tuition: boolean;
-  available_time: string;
+  available_time: AvailableTypeEnum;
   no_of_periods: number;
   salary_per_period: number;
   period_from_time: string;
@@ -27,8 +29,14 @@ interface Teacher {
   province: number;
   district: number;
   municipality: number;
-  subject: number[];
-  grade: number[];
+  subject: {
+    id: string;
+    name: string;
+  }[];
+  grade: {
+    id: string;
+    name: string;
+  }[];
 }
 
 // Define the interface for User Details
@@ -59,19 +67,19 @@ interface UserProfile {
 
 // Define the interface for Document
 interface Document {
-  id: string;
+  id: number;
   file: string;
 }
 
 // Define the interface for CV
 interface CV {
-  id: string;
+  id: number;
   file: string;
 }
 
 // Define the interface for Citizenship
 interface Citizenship {
-  id: string;
+  id: number;
   file: string;
 }
 
@@ -87,6 +95,7 @@ interface TeacherDetails {
 export interface Vacancy {
   id: string;
   qualification: string;
+  name: string;
   grade: string[];
   subject: string[];
   no_of_applications: number;
@@ -122,15 +131,20 @@ export interface Vacancy {
       web_site_link: string;
     };
   };
+  vacancy_application: {
+    cover_letter: string;
+    status: string;
+  }[];
 }
 
 // Define the interface for Vacancy Application Details
 interface VacancyApplicationDetails {
   id: string;
+
   teacher: string;
   cv: string | null;
   vacancy: Vacancy;
-  status: string;
+  status: VacancyStatus;
   cover_letter: string | null;
   is_offered: boolean;
   is_accepted: boolean;
@@ -143,9 +157,29 @@ interface DataStructure {
   vacancy_application_details: VacancyApplicationDetails;
 }
 
+export enum VacancyStatus {
+  APPROVED = '1',
+  PENDING = '2',
+  REJECTED = '3',
+  HIRED = '4',
+}
+
+export interface ISentApplicationAdmin {
+  data: {
+    teacher: ITeacherDetail;
+    vacancy_application: VacancyApplicationDetails[];
+  }[];
+}
+
 // Define the interface for the list of data
 export interface DataList {
   data: DataStructure[];
+}
+
+export interface ApplicantDetails {
+  id: string;
+  teacher: TeacherDetails;
+  vacancy: Vacancy;
 }
 
 const getReceivedOffer = async () => {
@@ -162,7 +196,7 @@ export const useGetReceivedOffer = () => {
 };
 
 const getSentOffer = async () => {
-  const { data } = await HttpClient.get<ApiResponse<DataList>>(
+  const { data } = await HttpClient.get<ApiResponse>(
     api.organization.sentOffer,
   );
   return data.data;
@@ -171,5 +205,51 @@ const getSentOffer = async () => {
 export const useGetSentOffer = () => {
   return useQuery(['sent'], () => getSentOffer(), {
     keepPreviousData: true,
+  });
+};
+
+const getApplicantsByID = async ({ id }: { id: string }) => {
+  const { data } = await HttpClient.get<ApiResponse<ApplicantDetails>>(
+    `${api.teacher.applicationDetails}${id}/`,
+  );
+  return data.data;
+};
+
+export const useGetApplicantsByID = ({ id }: { id: string }) => {
+  return useQuery(
+    [id, 'aplicationID'],
+    () =>
+      getApplicantsByID({
+        id: id,
+      }),
+    {
+      keepPreviousData: true,
+    },
+  );
+};
+
+export const getReceivedApplicationAdmin = async () => {
+  const { data } = await HttpClient.get<ISentApplicationAdmin>(
+    api.admin.getReceivedApplication,
+  );
+  return data.data;
+};
+
+export const useGetReceivedApplicationAdmin = () => {
+  return useQuery(['recievedadmin'], () => getReceivedApplicationAdmin(), {
+    refetchOnMount: true,
+  });
+};
+
+export const getSentApplicationAdmin = async () => {
+  const { data } = await HttpClient.get<ISentApplicationAdmin>(
+    api.admin.getSentApplication,
+  );
+  return data.data;
+};
+
+export const useGetSentApplicationAdmin = () => {
+  return useQuery(['sentadmin'], () => getSentApplicationAdmin(), {
+    refetchOnMount: true,
   });
 };

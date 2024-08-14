@@ -33,7 +33,6 @@ const EducationCard = ({ img, name, address, subject, classes }: ICard) => {
       border="1px solid #e2e8f0"
       borderRadius="8px"
       boxShadow="0 4px 12px rgba(0, 0, 0, 0.1)"
-      maxW="650px"
     >
       <Flex direction="column" gap={4}>
         {/* Top Section */}
@@ -87,14 +86,14 @@ const EducationCard = ({ img, name, address, subject, classes }: ICard) => {
           <Text fontWeight="600" fontSize="15px" color="#09305A" mb={2}>
             Courses:
           </Text>
-          <LabelBox items={subject} bgColor={'#FF6B6B'} />
+          <LabelBox items={subject} bgColor={'#FF6B6B'} color="#fff" />
         </Box>
         <Box>
           <Text fontWeight="600" fontSize="15px" color="#09305A" mb={2}>
             Topics:
           </Text>
           <Text fontSize="14px" color="gray.600">
-            <LabelBox items={classes} bgColor={'#4CAF50'} />
+            <LabelBox items={classes} bgColor={'#4CAF50'} color="#fff" />
           </Text>
         </Box>
       </Flex>

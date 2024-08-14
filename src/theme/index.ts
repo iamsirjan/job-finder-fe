@@ -17,7 +17,7 @@ export const theme = extendTheme({
   styles: {
     global: {
       body: {
-        background: '#efefef',
+        background: '#ecedf8',
         fontFamily: 'Mulish',
       },
     },
