@@ -9,6 +9,9 @@ import { ISecondStep } from 'pages/Register/TeacherRegistration/secondStep/inter
 import { IThirdStep } from 'pages/Register/TeacherRegistration/thirdStep/interface';
 import { IFirstStep } from 'pages/Register/TeacherRegistration/firstStep/interface';
 import { AvailableTypeEnum } from 'pages/Register/TeacherRegistration/firstStep/constant';
+import { useCommonStore } from 'state/common.state';
+import { useNavigate } from 'react-router-dom';
+import { NAVIGATION_ROUTES } from 'route/routes.constant';
 
 interface IDocument {
   id: number;
@@ -171,14 +174,20 @@ const registerTeacherStepThird = async ({
   return response;
 };
 
-export const useRegisterTeacherStepThird = () => {
+export const useRegisterTeacherStepThird = ({
+  redirect,
+}: {
+  redirect: boolean;
+}) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const increaseStep = useRegistrationStore((state) => state.increaseStep);
   return useMutation(registerTeacherStepThird, {
     onSuccess: () => {
       increaseStep();
       queryClient.invalidateQueries('user');
+      redirect && navigate(NAVIGATION_ROUTES.BASE);
     },
     onError: (error) => {
       const err = error as AxiosError<{ message: string; errors: [] }>;
@@ -205,14 +214,16 @@ export const useGetTeacherDetails = () => {
 const getAllTeacherDetails = async ({
   grade,
   subject,
+  search,
 }: {
   grade?: string[];
+  search?: string;
   subject?: string[];
 }) => {
   const data = await HttpClient.get<ApiResponse<ITeacherDetail[]>>(
     api.teacher.getAllTeacherDetails,
     {
-      params: { grade, subject },
+      params: { grade, subject, teacher: search },
     },
   );
   return data;
@@ -221,18 +232,24 @@ const getAllTeacherDetails = async ({
 export const useGetAllTeacherDetails = ({
   grade,
   subject,
+  search,
 }: {
   grade?: string[];
   subject?: string[];
+  search?: string;
 } = {}) => {
   return useQuery(
-    ['teacherall', grade, subject],
+    ['teacherall', grade, subject, search],
     () =>
       getAllTeacherDetails({
         grade: grade,
         subject: subject,
+        search: search,
       }),
     {
+      onSuccess: () => {
+        useCommonStore.getState().setDrawer(false);
+      },
       keepPreviousData: true,
     },
   );

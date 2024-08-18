@@ -48,5 +48,5 @@ export const NAVIGATION_ROUTES = {
   TEACHER: {
     EDITTEACHER: '/teacher/edit/:id',
   },
-  MESSENGER: '/chat',
+  MESSENGER: '/messenger',
 };

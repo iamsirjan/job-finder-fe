@@ -1,4 +1,11 @@
-import { Flex, Input, Select, Switch, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Input,
+  Select,
+  Switch,
+  Textarea,
+  VStack,
+} from '@chakra-ui/react';
 import FormField from 'components/form/FormField';
 import { useFormContext } from 'react-hook-form';
 import { AvailableTime, AvailableTypeEnum, GENDER } from './constant';
@@ -60,7 +67,7 @@ const Form = () => {
         </Select>
       </FormField>
       <FormField label="Bio" error={errors.biography?.message}>
-        <Input {...register('biography')} name="biography" type="text" />
+        <Textarea {...register('biography')} name="biography" />
       </FormField>
       <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
         <FormField label="Date of birth" error={errors.date_of_birth?.message}>

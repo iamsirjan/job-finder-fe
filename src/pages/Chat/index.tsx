@@ -17,71 +17,44 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useToast,
 } from '@chakra-ui/react';
-import { ArrowBackIcon, AttachmentIcon, LinkIcon } from '@chakra-ui/icons';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+
+import { ArrowBackIcon, AttachmentIcon } from '@chakra-ui/icons';
 import Wrapper from 'wrapper';
 import { marked } from 'marked';
-
-interface Message {
-  user: string;
-  text?: string; // Optional, as we might have files or URLs
-  fileUrl?: string; // URL for files (images, videos, documents)
-  fileType?: 'image' | 'video' | 'document'; // Type of file
-  url?: { name: string; link: string }; // URL and its name
-  timestamp: string;
-}
-
-interface Conversation {
-  user: string;
-  avatar: string;
-  lastMessage: string;
-  timestamp: string;
-  messages: Message[];
-}
+import {
+  IChatData,
+  useGetChat,
+  useGetChatUsers,
+  useGetRecentChat,
+  useSendChat,
+} from 'service/service-chat';
+import { useGetUserDetails } from 'service/service-user';
 
 const ChatWindow = () => {
-  const defaultData = {
-    user: '',
-    avatar: '',
-    lastMessage: '',
-    timestamp: '',
-    messages: [],
-  };
-
-  const [conversations, setConversations] = useState<Conversation[]>([
-    {
-      user: 'John Doe',
-      avatar: 'https://bit.ly/dan-abramov',
-      lastMessage: 'Hey, how are you?',
-      timestamp: '2m ago',
-      messages: [
-        { user: 'John Doe', text: 'Hey, how are you?', timestamp: '2m ago' },
-        { user: 'User', text: 'I am good, thanks!', timestamp: '1m ago' },
-      ],
-    },
-    // Add more conversations as needed
-  ]);
-
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
+  const [showUser, setShowUser] = useState(false);
   const [selectedConversation, setSelectedConversation] =
-    useState<Conversation>(defaultData);
+    useState<IChatData | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
-  const [urlData, setUrlData] = useState<{ name: string; link: string } | null>(
-    null,
-  );
-  const [showUrlModal, setShowUrlModal] = useState<boolean>(false);
   const [showFileModal, setShowFileModal] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const userSearch = useGetChatUsers({ user: searchQuery });
+  const recentChat = useGetRecentChat();
+  const userChat = useGetChat({ user: selectedUserId });
+  const sendChat = useSendChat();
+  const user = useGetUserDetails();
 
   const [isMobileView, setIsMobileView] = useState<boolean>(
     window.innerWidth < 768,
   );
   const [showSidebar, setShowSidebar] = useState<boolean>(
-    isMobileView && !!selectedConversation.user,
+    isMobileView && !!selectedConversation,
   );
-
-  const toast = useToast();
 
   const handleResize = () => {
     const isMobile = window.innerWidth < 768;
@@ -95,57 +68,46 @@ const ChatWindow = () => {
     };
   }, []);
 
-  const handleSendMessage = () => {
-    if (inputValue.trim() || file || urlData) {
-      const newMessage: Message = {
-        user: 'User',
-        text: inputValue.trim(),
-        fileUrl: file ? URL.createObjectURL(file) : undefined,
-        fileType: file
-          ? file.type.startsWith('image')
-            ? 'image'
-            : file.type.startsWith('video')
-              ? 'video'
-              : 'document'
-          : undefined,
-        url: urlData || undefined,
-        timestamp: new Date().toLocaleTimeString(),
-      };
+  useEffect(() => {
+    if (userChat.data) {
+      setSelectedConversation(userChat.data);
+    } else {
+      setSelectedConversation(null);
+    }
+  }, [userChat.data]);
 
-      const updatedConversations = conversations.map((conv) =>
-        conv.user === selectedConversation.user
-          ? {
-              ...conv,
-              messages: [...conv.messages, newMessage],
-              lastMessage: newMessage.text || 'Sent a file' || 'Shared a URL',
-              timestamp: newMessage.timestamp,
-            }
-          : conv,
-      );
-      setConversations(updatedConversations);
-      setSelectedConversation({
-        ...selectedConversation,
-        messages: [...selectedConversation.messages, newMessage],
+  const handleSendMessage = () => {
+    if (inputValue.trim() || file) {
+      const formData = new FormData();
+      formData.append('content', inputValue);
+      formData.append('chat', selectedConversation?.id.toString() || '');
+      if (file) {
+        formData.append('file', file);
+      }
+
+      sendChat.mutate(formData, {
+        onSuccess: () => {
+          userChat.refetch();
+          setInputValue('');
+          setFile(null);
+        },
       });
-      setInputValue('');
-      setFile(null);
-      setUrlData(null);
     }
   };
 
   const handleFileAttachment = () => {
     if (file) {
       handleSendMessage();
-      setFile(null); // Clear file after sending
+      setShowFileModal(false);
     }
   };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [selectedConversation.messages]);
+  }, [selectedConversation?.messages]);
 
   useEffect(() => {
-    setShowSidebar(isMobileView && !!selectedConversation.user);
+    setShowSidebar(isMobileView && !!selectedConversation);
   }, [isMobileView, selectedConversation]);
 
   const renderMarkdown = (text: string) => {
@@ -157,7 +119,7 @@ const ChatWindow = () => {
       <Flex height={'80vh'} bg="white" boxShadow="lg">
         {!showSidebar && (
           <Box
-            width={isMobileView ? '100%' : '30%'}
+            width={isMobileView ? '100%' : '25%'}
             borderRight="1px solid lightgray"
             p={4}
             overflowY="auto"
@@ -165,34 +127,87 @@ const ChatWindow = () => {
             <Text fontSize="xl" mb={4}>
               Conversations
             </Text>
-            {conversations.map((conv, index) => (
-              <Box
-                key={index}
-                p={2}
-                cursor="pointer"
-                onClick={() => {
-                  setSelectedConversation(conv);
-                }}
-                bg={
-                  conv.user === selectedConversation.user ? 'gray.200' : 'white'
-                }
-                borderRadius="md"
-              >
-                <HStack spacing={4}>
-                  <Avatar name={conv.user} src={conv.avatar} />
-                  <Box>
-                    <Text fontWeight="bold">{conv.user}</Text>
-                    <Text fontSize="sm">{conv.lastMessage}</Text>
+            <Box mb={4}>
+              <Input
+                placeholder="Search user"
+                value={searchQuery}
+                onFocus={() => setShowUser(true)}
+                // onBlur={() => setShowUser(false)}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {showUser && (
+                <Box mt={2}>
+                  {userSearch.data?.map((user) => (
+                    <Box
+                      key={user.id}
+                      p={2}
+                      cursor="pointer"
+                      onClick={() => {
+                        setSelectedUserId(user.id);
+                        setShowUser(false);
+                      }}
+                      borderRadius="md"
+                    >
+                      <HStack spacing={4}>
+                        <Avatar name={user.name} src={user.profile_picture} />
+                        <Box>
+                          <Text fontWeight="300">{user.name}</Text>
+                        </Box>
+                      </HStack>
+                      <Divider mt={2} />
+                    </Box>
+                  ))}
+                </Box>
+              )}
+            </Box>
+            {recentChat.data?.data &&
+              recentChat.data.data.map((conv) => {
+                const isUserParticipant1 =
+                  user.data?.id === conv.participant1.id;
+                const receiver = isUserParticipant1
+                  ? conv.participant2
+                  : conv.participant1;
+
+                return (
+                  <Box
+                    key={conv.id}
+                    p={2}
+                    cursor="pointer"
+                    onClick={() => setSelectedUserId(receiver.id)}
+                    bg={receiver.id === selectedUserId ? 'gray.200' : 'white'}
+                    borderRadius="md"
+                  >
+                    <HStack spacing={4}>
+                      <Avatar
+                        name={receiver.name}
+                        src={receiver.profile_picture}
+                      />
+                      <Box>
+                        <Text fontWeight="300">{receiver.name}</Text>
+                        <Text
+                          fontWeight={conv.is_seen ? '300' : '900'}
+                          fontSize="sm"
+                        >
+                          {conv.latest_message.file
+                            ? 'sent a file'
+                            : conv.latest_message.content}
+                        </Text>
+                      </Box>
+                      <Spacer />
+                      <Text fontSize="xs">
+                        {formatDistanceToNow(
+                          parseISO(conv.latest_message.created_at),
+                          { addSuffix: true },
+                        )}
+                      </Text>
+                    </HStack>
+                    <Divider mt={2} />
                   </Box>
-                  <Spacer />
-                  <Text fontSize="xs">{conv.timestamp}</Text>
-                </HStack>
-                <Divider mt={2} />
-              </Box>
-            ))}
+                );
+              })}
           </Box>
         )}
-        {!!selectedConversation.user ? (
+        {selectedUserId && (
           <Flex direction="column" flex="1" height="80vh">
             <Flex
               bg="blue.500"
@@ -201,11 +216,16 @@ const ChatWindow = () => {
               position="relative"
               justifyContent={'space-between'}
             >
-              <Text fontSize="xl">{selectedConversation.user}</Text>
+              <Text fontSize="xl">
+                {selectedConversation
+                  ? user.data?.id ===
+                    selectedConversation.participant1.id.toString()
+                    ? selectedConversation.participant2.name
+                    : selectedConversation.participant1.name
+                  : 'New Conversation'}
+              </Text>
               {isMobileView && (
-                <ArrowBackIcon
-                  onClick={() => setSelectedConversation(defaultData)}
-                />
+                <ArrowBackIcon onClick={() => setSelectedConversation(null)} />
               )}
             </Flex>
             <VStack
@@ -216,56 +236,52 @@ const ChatWindow = () => {
               border="1px solid lightgray"
               borderRadius="md"
             >
-              {selectedConversation.messages.map((message, index) => (
-                <HStack
-                  key={index}
-                  alignSelf={
-                    message.user === 'User' ? 'flex-end' : 'flex-start'
-                  }
-                >
-                  <Avatar name={message.user} size="sm" />
-                  <Box
-                    bg={message.user === 'User' ? 'blue.100' : 'gray.100'}
-                    p={3}
-                    borderRadius="md"
-                  >
-                    {message.text && renderMarkdown(message.text)}
-                    {message.fileUrl && message.fileType === 'image' && (
-                      <img
-                        src={message.fileUrl}
-                        alt="Attachment"
-                        style={{ maxWidth: '100%' }}
-                      />
-                    )}
-                    {message.fileUrl && message.fileType === 'video' && (
-                      <video
-                        src={message.fileUrl}
-                        controls
-                        style={{ maxWidth: '100%' }}
-                      />
-                    )}
-                    {message.fileUrl && message.fileType === 'document' && (
-                      <a href={message.fileUrl} download>
-                        Download document
-                      </a>
-                    )}
-                    {message.url && (
-                      <a
-                        href={message.url.link}
-                        target="_blank"
-                        style={{ color: 'blue' }}
-                        rel="noopener noreferrer"
-                      >
-                        {message.url.name}
-                      </a>
-                    )}
-                    <Text fontSize="xs" textAlign="right">
-                      {message.timestamp}
-                    </Text>
-                  </Box>
-                </HStack>
-              ))}
+              {selectedConversation?.messages.length ? (
+                selectedConversation?.messages.map((message, index) => {
+                  const isUserParticipant1 =
+                    user.data?.id ===
+                    selectedConversation.participant1.id.toString();
 
+                  const receiver = isUserParticipant1
+                    ? selectedConversation.participant2
+                    : selectedConversation.participant1;
+                  return (
+                    <HStack
+                      key={index}
+                      alignSelf={
+                        message.sender.id === receiver.id
+                          ? 'flex-end'
+                          : 'flex-start'
+                      }
+                    >
+                      <Avatar name={message.sender.name} size="sm" />
+                      <Box
+                        bg={
+                          message.sender.id.toString() === selectedUserId
+                            ? 'blue.100'
+                            : 'gray.100'
+                        }
+                        p={3}
+                        borderRadius="md"
+                      >
+                        {message.content && renderMarkdown(message.content)}
+                        {message.file && (
+                          <a href={message.file} download>
+                            Download file
+                          </a>
+                        )}
+                        <Text fontSize="xs" textAlign="right">
+                          {new Date(message.created_at).toLocaleTimeString()}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  );
+                })
+              ) : (
+                <Text color="gray.500">
+                  No messages yet. Start the conversation by sending a message.
+                </Text>
+              )}
               <div ref={messagesEndRef} />
             </VStack>
             <Flex p={4} borderTop="1px solid lightgray">
@@ -286,54 +302,9 @@ const ChatWindow = () => {
                 icon={<AttachmentIcon />}
                 onClick={() => setShowFileModal(true)}
               />
-              <IconButton
-                aria-label="link"
-                ml={2}
-                icon={<LinkIcon />}
-                onClick={() => setShowUrlModal(true)}
-              />
             </Flex>
           </Flex>
-        ) : (
-          <Flex justifyContent={'center'} alignItems={'center'} flex={1}>
-            <Text color="gray.500">
-              Please select any conversation and start chatting
-            </Text>
-          </Flex>
         )}
-
-        {/* URL Modal */}
-        <Modal isOpen={showUrlModal} onClose={() => setShowUrlModal(false)}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Add URL</ModalHeader>
-            <ModalBody>
-              <Input
-                placeholder="Link name"
-                mb={3}
-                onChange={(e) =>
-                  setUrlData((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
-              <Input
-                placeholder="URL"
-                onChange={(e) =>
-                  setUrlData((prev) => ({ ...prev, link: e.target.value }))
-                }
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                onClick={() => {
-                  setShowUrlModal(false);
-                }}
-              >
-                Save
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
 
         {/* File Modal */}
         <Modal isOpen={showFileModal} onClose={() => setShowFileModal(false)}>
@@ -352,13 +323,7 @@ const ChatWindow = () => {
               />
             </ModalBody>
             <ModalFooter>
-              <Button
-                colorScheme="blue"
-                onClick={() => {
-                  handleFileAttachment();
-                  setShowFileModal(false);
-                }}
-              >
+              <Button colorScheme="blue" onClick={handleFileAttachment}>
                 Attach
               </Button>
             </ModalFooter>

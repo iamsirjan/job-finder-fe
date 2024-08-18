@@ -6,6 +6,7 @@ const intialState: ICommonState = {
   isEditMode: false,
   isDrawerOpen: false,
   orgID: '',
+  search: '',
 };
 
 export const useCommonStore = create(
@@ -13,5 +14,6 @@ export const useCommonStore = create(
     setEditMode: (isEditMode: boolean) => set({ isEditMode }),
     setDrawer: (isDrawerOpen: boolean) => set({ isDrawerOpen }),
     setOrgID: (orgID: string) => set({ orgID }),
+    setSearch: (search: string) => set({ search }),
   })),
 );

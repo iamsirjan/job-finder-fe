@@ -12,6 +12,7 @@ import { ApiResponse, api } from 'service/service-api';
 import { HttpClient } from 'service/service-axios';
 import { ITeacherDetail } from 'service/service-teacher-register';
 import { toastFail, toastSuccess } from 'service/service-toast';
+import { useCommonStore } from 'state/common.state';
 import { extractErrorMessage } from 'utils/errorHandler';
 
 export const vacancyFetchQuery = 'vacancy';
@@ -134,12 +135,14 @@ export const useUpdateVacancyData = () => {
 const getVacancyList = async ({
   grade,
   subject,
+  search,
 }: {
   grade?: string[];
   subject?: string[];
+  search?: string;
 }) => {
   const { data } = await HttpClient.get<IVacancyResponse>(api.vacancy, {
-    params: { grade, subject },
+    params: { grade, subject, vacancy: search },
   });
   return data.data || [];
 };
@@ -147,18 +150,24 @@ const getVacancyList = async ({
 export const useGetVacancyList = ({
   grade,
   subject,
+  search,
 }: {
   grade?: string[];
   subject?: string[];
+  search?: string;
 } = {}) => {
   return useQuery(
-    [vacancyFetchQuery, grade, subject],
+    [vacancyFetchQuery, grade, subject, search],
     () =>
       getVacancyList({
         grade: grade,
         subject: subject,
+        search: search,
       }),
     {
+      onSuccess: () => {
+        useCommonStore.getState().setDrawer(false);
+      },
       keepPreviousData: true,
     },
   );

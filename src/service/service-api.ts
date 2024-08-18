@@ -69,6 +69,13 @@ export const api = {
     hire: '/organization/hire-vacancy-application/',
   },
   vacancy: '/organization/vacancy/',
+
+  chat: {
+    user: '/user/users/',
+    getUserChat: '/user/chat/',
+    chat: '/user/message/',
+    recentChat: '/user/chat-users/',
+  },
 };
 
 export interface ApiResponse<T = any> {

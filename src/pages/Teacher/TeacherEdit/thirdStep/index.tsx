@@ -9,11 +9,12 @@ import { useParams } from 'react-router-dom';
 const SecondStep = ({ data }: { data: IThirdStep }) => {
   const { id } = useParams<{ id: string }>();
 
-  const register = useRegisterTeacherStepThird();
+  const register = useRegisterTeacherStepThird({
+    redirect: false,
+  });
 
   const handleSubmit = async (data: IThirdStep) => {
     const formData = new FormData();
-    console.log(data.profile_picture);
     formData.append('profile_picture', data?.profile_picture[0]);
     await register.mutateAsync({
       body: formData,

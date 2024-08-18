@@ -6,11 +6,12 @@ import Form from './form';
 import { useRegisterTeacherStepThird } from 'service/service-teacher-register';
 
 const SecondStep = () => {
-  const register = useRegisterTeacherStepThird();
+  const register = useRegisterTeacherStepThird({
+    redirect: true,
+  });
 
   const handleSubmit = async (data: IThirdStep) => {
     const formData = new FormData();
-    console.log(data.profile_picture);
     formData.append('profile_picture', data?.profile_picture[0]);
     await register.mutateAsync({
       body: formData,

@@ -124,18 +124,17 @@ const CardComponent = ({
               View Details
             </Button>
           </Link>
-          {user.data?.is_teacher ||
-            (showApply && (
-              <Button
-                size="md"
-                borderRadius={'25px'}
-                w={'140px'}
-                background={'brand.mainBlue'}
-                onClick={() => handleSendRequest(id)}
-              >
-                Apply
-              </Button>
-            ))}
+          {showApply && (
+            <Button
+              size="md"
+              borderRadius={'25px'}
+              w={'140px'}
+              background={'brand.mainBlue'}
+              onClick={() => handleSendRequest(id)}
+            >
+              Apply
+            </Button>
+          )}
         </Flex>
       </Flex>
     </Box>

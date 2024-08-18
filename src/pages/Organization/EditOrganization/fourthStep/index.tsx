@@ -10,7 +10,9 @@ import {
 import { useParams } from 'react-router-dom';
 
 const FourthStep = () => {
-  const register = useRegisterOrganizationStepFourth();
+  const register = useRegisterOrganizationStepFourth({
+    redirect: false,
+  });
   const { id } = useParams<{ id: string }>();
   const orgDetails = useGetOrgDetailsByID(id ?? '');
 

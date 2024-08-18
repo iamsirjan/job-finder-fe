@@ -11,6 +11,8 @@ import { extractErrorMessage } from 'utils/errorHandler';
 import { toastFail, toastSuccess } from './service-toast';
 import { IOrgSecondStep } from 'pages/Register/OrganizationRegistration/secondStep/interface';
 import { IOrgFourthStep } from 'pages/Register/OrganizationRegistration/fourthStep/interface';
+import { useNavigate, useNavigation } from 'react-router-dom';
+import { NAVIGATION_ROUTES } from 'route/routes.constant';
 
 interface IOrgThirdStepRequest {
   grade: string;
@@ -284,15 +286,21 @@ const registerOrganizationStepFourth = async ({
   return response;
 };
 
-export const useRegisterOrganizationStepFourth = () => {
+export const useRegisterOrganizationStepFourth = ({
+  redirect,
+}: {
+  redirect?: boolean;
+}) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const increaseStep = useRegistrationStore((state) => state.increaseStep);
   return useMutation(registerOrganizationStepFourth, {
     onSuccess: () => {
       increaseStep();
-      queryClient.invalidateQueries('orgdetails');
+      queryClient.invalidateQueries('user');
       toastSuccess('picture updated successfully');
+      redirect && navigate(NAVIGATION_ROUTES.BASE);
     },
     onError: (error) => {
       const err = error as AxiosError<{ message: string; errors: [] }>;

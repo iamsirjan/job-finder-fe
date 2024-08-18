@@ -123,7 +123,7 @@ const agentRegistrationRoute = [
 const teacherRoutes = [
   ...openRoutes,
   {
-    Path: NAVIGATION_ROUTES.MESSENGER,
+    path: NAVIGATION_ROUTES.MESSENGER,
     element: <ChatSection />,
   },
   {
@@ -168,7 +168,7 @@ const teacherRoutes = [
 const organizationRoute = [
   ...openRoutes,
   {
-    Path: NAVIGATION_ROUTES.MESSENGER,
+    path: NAVIGATION_ROUTES.MESSENGER,
     element: <ChatSection />,
   },
   {
@@ -361,6 +361,8 @@ const AppRoutes = () => {
   const is_student = userDetails.data?.is_student;
   const is_agent = userDetails.data?.is_agent;
   const is_admin = userDetails.data?.is_superuser;
+
+  console.log(is_teacher);
 
   const routes = isAuthenticated
     ? is_teacher && !isRegistered

@@ -15,6 +15,7 @@ import { BsFillPeopleFill } from 'react-icons/bs';
 import { MdCastForEducation, MdSchool } from 'react-icons/md';
 import { GrUserWorker } from 'react-icons/gr';
 import { useAuthentication, useLogoutMutation } from 'service/service-auth';
+import { useCommonStore } from 'state/common.state';
 
 const MenuItem = ({
   to,
@@ -59,6 +60,7 @@ const MenuItem = ({
 
 const Navbar = () => {
   const logout = useLogoutMutation();
+  const { search } = useCommonStore();
   const { data: isAuthenticated } = useAuthentication();
   const activeColor = (isActive: boolean) => {
     if (isActive) {
@@ -91,7 +93,11 @@ const Navbar = () => {
             </InputLeftElement>
             <Input
               type="text"
+              onChange={(e) =>
+                useCommonStore.getState().setSearch(e.target.value)
+              }
               placeholder="Search"
+              value={search}
               border={'none'}
               outline={'none'}
               _placeholder={{ color: '#fccbc8', fontSize: '14px' }}
@@ -127,7 +133,10 @@ const Navbar = () => {
               </Text>
             </Link>
           )}
-          <FaFilter cursor={'pointer'} />
+          <FaFilter
+            onClick={() => useCommonStore.getState().setDrawer(true)}
+            cursor={'pointer'}
+          />
         </Flex>
       </Flex>
       <Flex mt={'8px'}>

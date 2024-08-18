@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Flex,
   Text,
@@ -21,6 +21,8 @@ import FormFooterButton from 'components/form/FormButton';
 import StaffCard from 'components/StaffCard';
 import { useJobFilter } from './state';
 import FilterJob from './filter';
+import { useCommonStore } from 'state/common.state';
+import { useLocation } from 'react-router-dom';
 
 interface IFormInput {
   vacancy: string;
@@ -28,6 +30,7 @@ interface IFormInput {
 
 const Staffs = () => {
   const { jobFilter, removeJobFilter } = useJobFilter();
+  const drawer = useCommonStore();
   const staffs = useGetAllTeacherDetails({
     grade:
       jobFilter
@@ -37,12 +40,18 @@ const Staffs = () => {
       jobFilter
         .filter((data) => data.key === 'subject')
         .map((data) => data.value) ?? [],
+    search: drawer.search,
   });
-  const { isOpen: isOpenFilter, onClose: onCloseDrawer } = useDisclosure();
+
   const vacancy = useGetVacancyListORG();
   const sendOffer = useSendOffer();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [teacherId, setTeacherID] = useState('');
+  const location = useLocation();
+
+  useEffect(() => {
+    useCommonStore.getState().setSearch('');
+  }, [location.pathname]);
 
   // Initialize React Hook Form
   const {
@@ -129,7 +138,10 @@ const Staffs = () => {
           </Flex>
         </form>
       </ModalComponent>
-      <FilterJob isOpen={isOpenFilter} onClose={onCloseDrawer} />
+      <FilterJob
+        isOpen={drawer.isDrawerOpen}
+        onClose={() => useCommonStore.getState().setDrawer(false)}
+      />
     </Wrapper>
   );
 };

@@ -64,7 +64,7 @@ const Form = () => {
           )}
         />
       </FormField>
-      <FormField label="Upload Files" error={errors.documents?.message}>
+      <FormField label="Upload Certificates" error={errors.documents?.message}>
         <Controller
           name="documents"
           control={control}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Flex,
   Text,
@@ -6,7 +6,6 @@ import {
   Textarea,
   Button,
   Box,
-  IconButton,
   Tag,
   TagLabel,
   TagCloseButton,
@@ -26,18 +25,15 @@ import { useGetUserDetails } from 'service/service-user';
 import { useGetMatchingVacancyList } from 'service/service-matching-vacancy';
 import FilterJob from './filter';
 import { useJobFilter } from './state';
+import { useCommonStore } from 'state/common.state';
+import { useLocation } from 'react-router-dom';
 
 interface IFormInput {
   coverLetter: string;
 }
 
 const Home = () => {
-  const {
-    isOpen: isOpenFilter,
-    onOpen: onOpenDrawer,
-    onClose: onCloseDrawer,
-  } = useDisclosure();
-
+  const drawer = useCommonStore();
   const teacher = useGetTeacherDetails();
   const [allJobs, setAllJobs] = useState(true);
   const [matchingJobs, setMatchingJobs] = useState(false);
@@ -46,6 +42,8 @@ const Home = () => {
   const [vacancyId, setVacancyID] = useState('');
   const user = useGetUserDetails();
   const { jobFilter, removeJobFilter } = useJobFilter();
+  const location = useLocation();
+
   const allVacancy = useGetVacancyList({
     grade:
       jobFilter
@@ -55,11 +53,16 @@ const Home = () => {
       jobFilter
         .filter((data) => data.key === 'subject')
         .map((data) => data.value) ?? [],
+    search: drawer.search,
   });
   const matchingVacancy = useGetMatchingVacancyList();
   const vacancy = allJobs
     ? (allVacancy?.data as any)
     : (matchingVacancy?.data?.data as any);
+
+  useEffect(() => {
+    useCommonStore.getState().setSearch('');
+  }, [location.pathname]);
 
   const {
     register,
@@ -135,6 +138,7 @@ const Home = () => {
                 address={data.organization.organization_detail.address}
                 img={data.organization.organization_detail.profile_pic}
                 classes={data.grade}
+                showApply={user.data?.is_teacher}
                 id={data.id}
                 subject={data.subject}
                 salary={data.salary_per_period}
@@ -174,7 +178,10 @@ const Home = () => {
           </Flex>
         </form>
       </ModalComponent>
-      <FilterJob isOpen={isOpenFilter} onClose={onCloseDrawer} />
+      <FilterJob
+        isOpen={drawer.isDrawerOpen}
+        onClose={() => useCommonStore.getState().setDrawer(false)}
+      />
     </Wrapper>
   );
 };

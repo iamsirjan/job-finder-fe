@@ -6,7 +6,9 @@ import Form from './form';
 import { useRegisterOrganizationStepFourth } from 'service/service-organization-register';
 
 const SecondStep = () => {
-  const register = useRegisterOrganizationStepFourth();
+  const register = useRegisterOrganizationStepFourth({
+    redirect: true,
+  });
 
   const handleSubmit = async (data: IOrgFourthStep) => {
     const formData = new FormData();

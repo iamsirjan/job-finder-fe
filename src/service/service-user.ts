@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { ApiResponse, api } from './service-api';
 import { HttpClient } from './service-axios';
 
-interface IUserDetails {
+export interface IUserDetails {
   id: string;
   address: string;
   email: string;
@@ -14,6 +14,8 @@ interface IUserDetails {
   is_teacher: boolean;
   step_of_register: number;
   is_registered: boolean;
+  name: string;
+  profile_picture: string;
 }
 
 const getUserDetails = async () => {
