@@ -5,16 +5,13 @@ import checker from 'vite-plugin-checker';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    svgr(),
-    checker({ eslint: { lintCommand: 'eslint src' }, overlay: false }),
-  ],
+  plugins: [react(), svgr(), checker({ overlay: false })],
   server: {
     port: 3000,
     host: 'localhost',
     open: true,
   },
+
   resolve: {
     alias: {
       src: '/src',

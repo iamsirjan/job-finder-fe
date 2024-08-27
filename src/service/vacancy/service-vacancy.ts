@@ -136,13 +136,17 @@ const getVacancyList = async ({
   grade,
   subject,
   search,
+  salary_high,
+  salary_low,
 }: {
   grade?: string[];
   subject?: string[];
   search?: string;
+  salary_high?: string;
+  salary_low?: string;
 }) => {
   const { data } = await HttpClient.get<IVacancyResponse>(api.vacancy, {
-    params: { grade, subject, vacancy: search },
+    params: { grade, subject, vacancy: search, salary_high, salary_low },
   });
   return data.data || [];
 };
@@ -151,18 +155,24 @@ export const useGetVacancyList = ({
   grade,
   subject,
   search,
+  salary_high,
+  salary_low,
 }: {
   grade?: string[];
   subject?: string[];
   search?: string;
+  salary_high?: string;
+  salary_low?: string;
 } = {}) => {
   return useQuery(
-    [vacancyFetchQuery, grade, subject, search],
+    [vacancyFetchQuery, grade, subject, search, salary_high, salary_low],
     () =>
       getVacancyList({
         grade: grade,
         subject: subject,
         search: search,
+        salary_high: salary_high,
+        salary_low: salary_low,
       }),
     {
       onSuccess: () => {

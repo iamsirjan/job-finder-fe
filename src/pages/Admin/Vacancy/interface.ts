@@ -12,6 +12,7 @@ export type IvacancyRequest = {
   allow_fresher: boolean;
   job_type: string;
   lodging: boolean;
+  organization: string;
   fooding: boolean;
   salary: number;
   salary_per_period: number;

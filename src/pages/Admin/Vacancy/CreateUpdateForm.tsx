@@ -17,6 +17,7 @@ import {
 } from 'pages/Register/TeacherRegistration/firstStep/constant';
 import { useGetAllGradeList } from 'service/master/service-grade';
 import { useGetAllDegreeList } from 'service/master/service-degree';
+import { useGetAllOrganization } from 'service/service-organization-register';
 
 const CreateUpdateForm = () => {
   const {
@@ -30,6 +31,7 @@ const CreateUpdateForm = () => {
   const grade = useGetAllGradeList();
   const subject = useGetAllSubjectList();
   const degree = useGetAllDegreeList();
+  const organization = useGetAllOrganization();
 
   const allGrade = useMemo(() => {
     return grade?.data?.map((grade) => ({
@@ -45,8 +47,15 @@ const CreateUpdateForm = () => {
     }));
   }, [subject]);
 
+  const allOrganization = useMemo(() => {
+    return organization?.data?.map((org) => ({
+      value: org.organization_detail.id,
+      label: org.organization_detail.name,
+    }));
+  }, [organization]);
   const gradeSel = watch('grade');
   const subjectSel = watch('subject');
+  const orgSel = watch('organization');
 
   const selectedGrades = useMemo(() => {
     return grade?.data
@@ -64,6 +73,20 @@ const CreateUpdateForm = () => {
     <VStack gap={4}>
       <FormField label="Vacancy Name" error={errors.name?.message}>
         <Input {...register('name')} name="name" size={'md'} type="text" />
+      </FormField>
+      <FormField label="Organization">
+        <FrameWorkDropdown
+          options={allOrganization ?? []}
+          isLoading={false}
+          value={orgSel}
+          onChange={(selectedOptions) => {
+            setValue('organization', selectedOptions.value, {
+              shouldDirty: true,
+            });
+            trigger('organization');
+          }}
+          placeholder={'Select Organization'}
+        />
       </FormField>
       <Flex justifyContent={'space-between'} gap={2} w="100%">
         <FormField label="Grade" error={errors.grade?.message}>

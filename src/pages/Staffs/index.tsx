@@ -41,6 +41,12 @@ const Staffs = () => {
         .filter((data) => data.key === 'subject')
         .map((data) => data.value) ?? [],
     search: drawer.search,
+    salary_high: jobFilter
+      .filter((data) => data.key === 'salary_high')
+      .map((data) => data.value),
+    salary_low: jobFilter
+      .filter((data) => data.key === 'salary_low')
+      .map((data) => data.value),
   });
 
   const vacancy = useGetVacancyListORG();

@@ -1,15 +1,7 @@
 import React from 'react';
-import {
-  Flex,
-  Text,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  Box,
-} from '@chakra-ui/react';
+import { Flex, Text, Box } from '@chakra-ui/react';
 import { Link, NavLink as RouterNavLink } from 'react-router-dom';
 import { NAVIGATION_ROUTES } from '../../route/routes.constant';
-import { SearchIcon } from '@chakra-ui/icons';
 import { FaFilter, FaHome } from 'react-icons/fa';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { MdCastForEducation, MdSchool } from 'react-icons/md';
@@ -60,7 +52,6 @@ const MenuItem = ({
 
 const Navbar = () => {
   const logout = useLogoutMutation();
-  const { search } = useCommonStore();
   const { data: isAuthenticated } = useAuthentication();
   const activeColor = (isActive: boolean) => {
     if (isActive) {
@@ -87,35 +78,26 @@ const Navbar = () => {
         alignItems={'center'}
       >
         <Flex>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon fontSize={'14px'} color="#fccbc8" />
-            </InputLeftElement>
-            <Input
-              type="text"
-              onChange={(e) =>
-                useCommonStore.getState().setSearch(e.target.value)
-              }
-              placeholder="Search"
-              value={search}
-              border={'none'}
-              outline={'none'}
-              _placeholder={{ color: '#fccbc8', fontSize: '14px' }}
-              color="#fccbc8"
-              _focus={{ boxShadow: 'none', border: 'none' }}
-            />
-          </InputGroup>
+          <FaFilter
+            onClick={() => useCommonStore.getState().setDrawer(true)}
+            cursor={'pointer'}
+            color="#fff"
+          />
         </Flex>
         <Flex gap={8} alignItems={'center'}>
           <Link to={NAVIGATION_ROUTES.DASHBOARD}>
-            <Text fontSize={'14px'} color="#fccbc8">
-              My Profile
-            </Text>
+            {isAuthenticated && (
+              <Text fontSize={'14px'} color="#fccbc8">
+                My Profile
+              </Text>
+            )}
           </Link>
           <Link to={NAVIGATION_ROUTES.MESSENGER}>
-            <Text fontSize={'14px'} color="#fccbc8">
-              Chat
-            </Text>
+            {isAuthenticated && (
+              <Text fontSize={'14px'} color="#fccbc8">
+                Chat
+              </Text>
+            )}
           </Link>
           {isAuthenticated ? (
             <Text
@@ -133,10 +115,6 @@ const Navbar = () => {
               </Text>
             </Link>
           )}
-          <FaFilter
-            onClick={() => useCommonStore.getState().setDrawer(true)}
-            cursor={'pointer'}
-          />
         </Flex>
       </Flex>
       <Flex mt={'8px'}>

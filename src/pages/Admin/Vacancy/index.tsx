@@ -20,7 +20,6 @@ import {
   useAddVacancyData,
   useDeleteVacancyData,
   useGetVacancyList,
-  useGetVacancyListORG,
   useUpdateVacancyData,
 } from 'service/vacancy/service-vacancy';
 import { useState } from 'react';
@@ -60,25 +59,33 @@ const VacancyAdmin = () => {
 
   const handleSubmit = async (data: IvacancyRequest) => {
     const vacancyData = {
-      organization: orgdetails.data?.organization_detail.id,
       ...data,
       from_date: new Date(data.from_date).toISOString().split('T')[0],
       to_date: new Date(data.to_date).toISOString().split('T')[0],
     };
     await postvacancy.mutateAsync(vacancyData);
-    useCommonStore.getState().setEditMode(true);
+    useCommonStore.getState().setEditMode(false);
+    onClose();
   };
 
-  const handleUpdate = async (data: IvacancyRequest) => {
-    await updateVacancy.mutateAsync({
-      id: orgdetails.data?.organization_detail.id ?? '',
-      data: data,
-    });
-  };
+  // const handleUpdate = async (data: IvacancyRequest) => {
+  //   await updateVacancy.mutateAsync({
+  //     id: orgdetails.data?.organization_detail.id ?? '',
+  //     data: data,
+  //   });
+  // };
   return (
     <Layout>
       <VStack h="inherit" spacing={0} bg="container.background">
-        <PageHeader title="Vacancy" search={false} filter={false} />
+        <PageHeader
+          title="Vacancy"
+          search={false}
+          filter={false}
+          button={'Create Vacancy'}
+          onButtonClick={() => {
+            onOpen();
+          }}
+        />
         <Divider mb={10} />
         <Table
           data={data}
@@ -102,7 +109,7 @@ const VacancyAdmin = () => {
             <FormWrapper<IvacancyRequest>
               validationSchema={VacancyFormValidation}
               defaultValues={VacancyDefaultValues}
-              onSubmit={handleUpdate}
+              onSubmit={handleSubmit}
             >
               <DrawerBody>
                 <CreateUpdateForm />{' '}

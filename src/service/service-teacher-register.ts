@@ -215,15 +215,19 @@ const getAllTeacherDetails = async ({
   grade,
   subject,
   search,
+  salary_high,
+  salary_low,
 }: {
   grade?: string[];
   search?: string;
   subject?: string[];
+  salary_high?: string;
+  salary_low?: string;
 }) => {
   const data = await HttpClient.get<ApiResponse<ITeacherDetail[]>>(
     api.teacher.getAllTeacherDetails,
     {
-      params: { grade, subject, teacher: search },
+      params: { grade, subject, teacher: search, salary_high, salary_low },
     },
   );
   return data;
@@ -233,18 +237,24 @@ export const useGetAllTeacherDetails = ({
   grade,
   subject,
   search,
+  salary_high,
+  salary_low,
 }: {
   grade?: string[];
   subject?: string[];
   search?: string;
+  salary_high?: string;
+  salary_low?: string;
 } = {}) => {
   return useQuery(
-    ['teacherall', grade, subject, search],
+    ['teacherall', grade, subject, search, salary_high, salary_low],
     () =>
       getAllTeacherDetails({
         grade: grade,
         subject: subject,
         search: search,
+        salary_high: salary_high,
+        salary_low: salary_low,
       }),
     {
       onSuccess: () => {
